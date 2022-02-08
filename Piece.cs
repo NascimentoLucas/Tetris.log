@@ -25,14 +25,14 @@ namespace GazeusGamesEtapaTeste
             };
         }
 
-        internal void Draw(string[] grid)
+        internal void Draw(Screen screen)
         {
             foreach (Vertex v in vertices)
             {
                 int vX = x + v.X;
                 int vY = y - v.Y;
-                int index = vX + (vY * Program.col);                
-                grid[index] = v.Image.ToString();
+                int index = vX + (vY * Screen.col);
+                screen.DrawAt(index, v.Image);
             }
         }
     }
