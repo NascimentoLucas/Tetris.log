@@ -10,8 +10,12 @@ namespace GazeusGamesEtapaTeste
     {
         public const int col = 20;
         public const int row = 20;
+        const char emptySpace = '-';
 
-        char[] grid = new char[row * col];
+        const ConsoleColor pieceColor = ConsoleColor.Green;
+        const ConsoleColor standardColor = ConsoleColor.White;
+
+        Pixel[] grid = new Pixel[row * col];
 
         public Screen()
         {
@@ -21,22 +25,30 @@ namespace GazeusGamesEtapaTeste
                 {
                     int index = i * col;
                     index += j;
-                    grid[index] = '-';
+                    grid[index] = new Pixel(standardColor, emptySpace);
                 }
             }
+            Console.ForegroundColor = ConsoleColor.Green;
         }
 
         internal void Draw()
         {
+            Console.Clear();
             for (int i = 0; i < col; i++)
             {
+                Console.ForegroundColor = standardColor;
+                Console.Write($"{i}.");
                 for (int j = 0; j < row; j++)
                 {
                     int index = i * col;
                     index += j;
-                    Console.Write(grid[index]);
+                    Console.ForegroundColor = grid[index].color;
+                    Console.Write(grid[index].image);
+                    grid[index].image = emptySpace;
+                    grid[index].color = standardColor;
                 }
-                Console.WriteLine("");
+                Console.ForegroundColor = standardColor;
+                Console.WriteLine($";");
             }
         }
 
@@ -45,7 +57,8 @@ namespace GazeusGamesEtapaTeste
             if (index < 0 || index > grid.Length - 1)
                 return;
 
-            grid[index] = v;
+            grid[index].image = v;
+            grid[index].color = pieceColor;
         }
     }
 }

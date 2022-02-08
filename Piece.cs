@@ -25,6 +25,12 @@ namespace GazeusGamesEtapaTeste
             };
         }
 
+        internal void Move(int x, int y)
+        {
+            this.x += x;
+            this.y += y;
+        }
+
         internal void Draw(Screen screen)
         {
             foreach (Vertex v in vertices)

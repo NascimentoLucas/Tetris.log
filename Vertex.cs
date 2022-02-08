@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace GazeusGamesEtapaTeste
 {
-    public class Vertex
+    public struct Vertex
     {
         int x;
         int y;
-        char image = '.';
+        char image;
 
         public int X { get => x; }
         public int Y { get => y; }
@@ -20,6 +20,7 @@ namespace GazeusGamesEtapaTeste
         {
             this.x = x;
             this.y = y;
+            image = '.';
         }
     }
 }
