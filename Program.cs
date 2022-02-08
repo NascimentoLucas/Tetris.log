@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace GazeusGamesEtapaTeste
 {
@@ -10,20 +12,20 @@ namespace GazeusGamesEtapaTeste
 
             Piece piece = new Piece(3, 2);
 
-
+            Dictionary<string, Point> inputs = InputManager.GetInputs();
+            
             bool running = true;
-            Random r = new Random();
-            int count = 0;
+            string input;
             while (running)
             {
                 piece.Draw(screen);
                 screen.Draw();
-                Console.ReadLine();
-                count += r.Next(0, 3);
+                input = Console.ReadLine();
 
-                piece.Move(r.Next(0, 2), r.Next(0, 2));
-
-                running = count < 1000;
+                if (inputs.ContainsKey(input))
+                    piece.Move(inputs[input]);
+                else
+                    piece.Move(InputManager.down);
             }
 
         }

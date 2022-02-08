@@ -1,8 +1,5 @@
-﻿using System;
+﻿using System.Drawing;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GazeusGamesEtapaTeste
 {
@@ -25,10 +22,10 @@ namespace GazeusGamesEtapaTeste
             };
         }
 
-        internal void Move(int x, int y)
+        internal void Move(Point mov)
         {
-            this.x += x;
-            this.y += y;
+            this.x += mov.X + InputManager.down.X;
+            this.y += mov.Y + InputManager.down.Y;
         }
 
         internal void Draw(Screen screen)
