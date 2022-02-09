@@ -15,10 +15,10 @@ namespace GazeusGamesEtapaTeste
             this.y = y;
             vertices = new List<Vertex>()
             {
-                new Vertex(0,0),
-                new Vertex(0,1),
-                new Vertex(-1,0),
-                new Vertex(1,0),
+                //new Vertex(0,0),
+                new Vertex(1,1),
+                //new Vertex(-1,0),
+                //new Vertex(1,0),
             };
         }
 
@@ -26,6 +26,17 @@ namespace GazeusGamesEtapaTeste
         {
             this.x += mov.X + InputManager.down.X;
             this.y += mov.Y + InputManager.down.Y;
+        }
+
+        internal void Test()
+        {
+            foreach (Vertex v in vertices)
+            {
+                int vX = x + v.X;
+                //int vY = y - v.Y;
+                //int index = vX + (vY * Screen.col);
+                //screen.DrawAt(index, v.Image);
+            }
         }
 
         internal void Draw(Screen screen)

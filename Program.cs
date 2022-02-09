@@ -16,8 +16,12 @@ namespace GazeusGamesEtapaTeste
             
             bool running = true;
             string input;
+            piece.Test();
+            input = Console.ReadLine();
+
             while (running)
             {
+                break;
                 piece.Draw(screen);
                 screen.Draw();
                 input = Console.ReadLine();
