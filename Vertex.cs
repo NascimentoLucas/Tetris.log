@@ -1,73 +1,55 @@
 ﻿using System;
 using System.Numerics;
+using System.Drawing;
 
 namespace GazeusGamesEtapaTeste
 {
     public struct Vertex
     {
-        int x;
-        int y;
+        Point point;
         char image;
-        int rot;
+        int angle;
 
-        public int X { get => Rotate(x); }
-        public int Y { get => Rotate(y); }
+        
+
         public char Image { get => image; }
+        public Point Point { get => GetScreenPositon(point); }
 
         public Vertex(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            point = new Point(x, y);
             image = '.';
-            rot = 0;
+            angle = 0;
         }
 
-        int Rotate(int axis)
+        Point GetScreenPositon(Point axis)
         {
-            int z = 1;
-            Console.WriteLine(x + "." + y);
             Matrix4x4 me = new Matrix4x4(
-                1, 0, 0, x,
-                0, 1, 0, y,
-                0, 0, 1, z,
+                1, 0, 0, axis.X,
+                0, 1, 0, axis.Y,
+                0, 0, 1, 1,
+                0, 0, 0, 1);
+                        
+            double rad = (angle * (Math.PI)) / 180;
+            float cos = (float)Math.Cos(rad);
+            float sin = (float)Math.Sin(rad);
+
+            Matrix4x4 rot = new Matrix4x4(
+                cos, -sin, 0, 0,
+                sin, cos, 0, 0,
+                0, 0, 1, 0,
                 0, 0, 0, 1);
 
-            float angle = 90;
-            do
-            {
-                double rad = (angle * (Math.PI)) / 180;
-                float cos = (float)Math.Cos(rad);
-                float sin = (float)Math.Sin(rad);
-
-                Matrix4x4 rot = new Matrix4x4(
-                    cos, -sin, 0, 0,
-                    sin, cos, 0, 0,
-                    0, 0, 1, 0,
-                    0, 0, 0, 1);
-
-
-                //rot = new Matrix4x4(
-                //     1, 0, 0, 0,
-                //     0, cos, -sin, 0,
-                //     0, sin, cos, 0,
-                //     0, 0, 0, 1);
-
-
-                //rot = new Matrix4x4(
-                //    cos, 0, sin, 0,
-                //    0, 1, 0, 0,
-                //    -sin, 0, cos, 0,
-                //    0, 0, 0, 1);
-
-                Matrix4x4 result = Matrix4x4.Multiply(rot, me);
-                Console.WriteLine($"{angle}: {(int)result.M14}.{(int)result.M24}");
-                Console.WriteLine("z: " + (int)result.M34);
-                angle += 90;
-            } while (angle < 360);
+            Matrix4x4 result = Matrix4x4.Multiply(rot, me);
+            axis.X = (int)result.M14;
+            axis.Y = (int)result.M24;
 
             return axis;
         }
 
-
+        internal void RotateTo(int v)
+        {
+            angle = v;
+        }
     }
 }

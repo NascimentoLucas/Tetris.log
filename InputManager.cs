@@ -17,6 +17,7 @@ namespace GazeusGamesEtapaTeste
             {
                 ["d"] = right,
                 ["a"] = left,
+                ["s"] = down,
             };
         }
     }

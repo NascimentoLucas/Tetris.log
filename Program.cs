@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 
 namespace GazeusGamesEtapaTeste
 {
@@ -16,20 +17,17 @@ namespace GazeusGamesEtapaTeste
             
             bool running = true;
             string input;
-            piece.Test();
-            input = Console.ReadLine();
 
             while (running)
             {
-                break;
                 piece.Draw(screen);
                 screen.Draw();
-                input = Console.ReadLine();
 
+                input = Console.ReadLine();
                 if (inputs.ContainsKey(input))
                     piece.Move(inputs[input]);
-                else
-                    piece.Move(InputManager.down);
+
+                Thread.Sleep(500);
             }
 
         }
