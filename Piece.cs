@@ -10,19 +10,19 @@ namespace GazeusGamesEtapaTeste
         Screen screen;
         List<Vertex> vertices;
 
-        int x;
-        int y;
+        Point position;
         int rot = 0;
         int id;
 
         public int Id { get => id; }
-        public int Index { get => Screen.GetIndex(x, y); }
+        public int Index { get => Screen.GetIndex(position.X, position.Y); }
+        public List<Vertex> Vertices { get => vertices; }
+        public Point Position { get => position; }
 
         public Piece(Screen screen, int x, int y, int id)
         {
             this.screen = screen;
-            this.x = x;
-            this.y = y;
+            position = new Point(x, y);
             this.id = id;
             vertices = new List<Vertex>()
             {
@@ -30,20 +30,21 @@ namespace GazeusGamesEtapaTeste
                 new Vertex(0,1),
                 new Vertex(-1,0),
                 new Vertex(1,0),
+
             };
         }
 
         internal void Move(Input.Input mov)
         {
-            this.x += mov.Movement.X;
-            this.y += mov.Movement.Y + 1;
+            position.X += mov.Movement.X;
+            position.Y += mov.Movement.Y + 1;
             rot += mov.Rotation;
         }
 
         internal void RevertMovement(Input.Input mov)
         {
-            this.x -= mov.Movement.X;
-            this.y -= mov.Movement.Y + 1;
+            position.X -= mov.Movement.X;
+            position.Y -= mov.Movement.Y + 1;
             rot -= mov.Rotation;
         }
 
@@ -53,8 +54,8 @@ namespace GazeusGamesEtapaTeste
             {
                 vertex.RotateTo(rot);
                 Point p = vertex.Point;
-                int vertexX = x + p.X;
-                int vertexY = y - p.Y;
+                int vertexX = position.X + p.X;
+                int vertexY = position.Y - p.Y;
                 int index = Screen.GetIndex(vertexX, vertexY);
                 screen.DrawAt(index, vertex.VertexChar, color);
             }
@@ -67,13 +68,13 @@ namespace GazeusGamesEtapaTeste
             Point otherPoint;
             foreach (Vertex myVertex in vertices)
             {
-                myPoint = new Point(x + myVertex.Point.X,
-                    y - myVertex.Point.Y);
+                myPoint = new Point(position.X + myVertex.Point.X,
+                    position.Y - myVertex.Point.Y);
 
                 foreach (Vertex otherVertex in otherPiece.vertices)
                 {
-                    otherPoint = new Point(otherPiece.x + otherVertex.Point.X,
-                        otherPiece.y - otherVertex.Point.Y);
+                    otherPoint = new Point(otherPiece.position.X + otherVertex.Point.X,
+                        otherPiece.position.Y - otherVertex.Point.Y);
 
                     if (myPoint == otherPoint)
                     {
@@ -91,7 +92,7 @@ namespace GazeusGamesEtapaTeste
             {
                 v.RotateTo(rot);
                 Point p = v.Point;
-                int vY = y - p.Y;
+                int vY = position.Y - p.Y;
 
                 if (vY >= Screen.col - 1)
                 {
@@ -100,6 +101,11 @@ namespace GazeusGamesEtapaTeste
             }
 
             return false;
+        }
+
+        internal void RemoveVertex(int i)
+        {
+            vertices.RemoveAt(i);
         }
     }
 }

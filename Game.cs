@@ -14,7 +14,7 @@ namespace GazeusGamesEtapaTeste
         Screen screen;
         List<Piece> pieces;
         Piece currentPiece;
-
+        int score = 0;
         public Game(Screen screen)
         {
             this.screen = screen;
@@ -24,14 +24,12 @@ namespace GazeusGamesEtapaTeste
 
             Dictionary<string, Input.Input> inputs = InputManager.GetInputs();
 
-            
-            
-
             bool running = true;
             string input;
 
             while (running)
             {
+                Console.WriteLine($"Score: {score}.");
                 foreach (Piece p in pieces)
                 {
                     p.Draw(BlockedPiecesColor);
@@ -61,12 +59,50 @@ namespace GazeusGamesEtapaTeste
             }
         }
 
+        private bool CheckForPoint()
+        {
+            int count = 0;
+            List<Vertex> vertices;
+            Point p = new Point(0, 0);
+            foreach (Piece piece in pieces)
+            {
+                vertices = piece.Vertices;
+                foreach (Vertex vertex in vertices)
+                {
+                    p.Y = piece.Position.Y - vertex.Point.Y;
+                    if (p.Y >= Screen.col - 1)
+                    {
+                        count++;
+                    }
+                }
+            }
+            Console.WriteLine($"Count {count} at {Screen.col - 1}");
+            if (count >= Screen.row)
+            {
+                score++;
+                return true;
+                foreach (Piece piece in pieces)
+                {
+                    vertices = piece.Vertices;
+                    for (int i = vertices.Count - 1; i >= 0; i--)
+                    {
+                        if (vertices[i].Point.Y >= Screen.col - 1)
+                        {
+                            piece.RemoveVertex(i);
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private void Foward()
         {
             while (!currentPiece.IsAtLimit() && !Colision(currentPiece))
                 currentPiece.Move(InputManager.down);
 
-            if(Colision(currentPiece))
+            if (Colision(currentPiece))
                 currentPiece.RevertMovement(InputManager.down);
 
             NextPiece();
@@ -94,6 +130,11 @@ namespace GazeusGamesEtapaTeste
         {
             pieces.Add(currentPiece);
             currentPiece = GetNewPiece();
+
+            if (CheckForPoint())
+            {
+
+            }
         }
 
         private bool Colision(Piece currentPiece)

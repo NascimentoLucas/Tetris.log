@@ -9,8 +9,8 @@ namespace GazeusGamesEtapaTeste
     public class Screen
     {
         public const string tapString = "                              ";
-        public const int col = 20;
-        public const int row = 20;
+        public const int col = 9;
+        public const int row = 9;
         const char emptySpace = '-';
 
         const ConsoleColor standardColor = ConsoleColor.White;
@@ -38,7 +38,7 @@ namespace GazeusGamesEtapaTeste
             for (int i = 0; i < col; i++)
             {
                 Console.Write(tapString);
-                Console.Write($"{i.ToString("00")}.");                        
+                Console.Write($"{i.ToString("00")};");                        
                 for (int j = 0; j < row; j++)
                 {
                     int index = i * col;
