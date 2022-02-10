@@ -47,17 +47,18 @@ namespace GazeusGamesEtapaTeste
             rot -= mov.Rotation;
         }
 
-        internal void Draw()
+        internal void Draw(ConsoleColor color)
         {
-            foreach (Vertex v in vertices)
+            foreach (Vertex vertex in vertices)
             {
-                v.RotateTo(rot);
-                Point p = v.Point;
-                int vX = x + p.X;
-                int vY = y - p.Y;
-                int index = screen.GetIndex(vX, vY);
-                screen.DrawAt(index, v.Image);
+                vertex.RotateTo(rot);
+                Point p = vertex.Point;
+                int vertexX = x + p.X;
+                int vertexY = y - p.Y;
+                int index = screen.GetIndex(vertexX, vertexY);
+                screen.DrawAt(index, vertex.VertexChar, color);
             }
+
         }
 
         internal bool Colision(Piece otherPiece)

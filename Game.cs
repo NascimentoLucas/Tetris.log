@@ -31,9 +31,9 @@ namespace GazeusGamesEtapaTeste
             {
                 foreach (Piece p in pieces)
                 {
-                    p.Draw();
+                    p.Draw(ConsoleColor.Blue);
                 }
-                currentPiece.Draw();
+                currentPiece.Draw(ConsoleColor.Green);
                 screen.Draw();
 
                 Console.WriteLine("Para jogar aperte: ");

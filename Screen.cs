@@ -12,7 +12,6 @@ namespace GazeusGamesEtapaTeste
         public const int row = 20;
         const char emptySpace = '-';
 
-        const ConsoleColor pieceColor = ConsoleColor.Green;
         const ConsoleColor standardColor = ConsoleColor.White;
 
         Pixel[] grid = new Pixel[row * col];
@@ -54,16 +53,16 @@ namespace GazeusGamesEtapaTeste
 
         internal int GetIndex(int vX, int vY)
         {
-           return vX + (vY * col); 
+            return vX + (vY * col);
         }
 
-        internal void DrawAt(int index, char v)
+        internal void DrawAt(int index, char v, ConsoleColor color)
         {
             if (index < 0 || index > grid.Length - 1)
                 return;
 
             grid[index].gridChar = v;
-            grid[index].color = pieceColor;
+            grid[index].color = color;
         }
     }
 }

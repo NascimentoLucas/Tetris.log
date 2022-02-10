@@ -7,18 +7,18 @@ namespace GazeusGamesEtapaTeste
     public struct Vertex
     {
         Point point;
-        char image;
+        char vertexChar;
         int angle;
 
-        
 
-        public char Image { get => image; }
+
+        public char VertexChar { get => vertexChar; }
         public Point Point { get => GetScreenPositon(point); }
 
         public Vertex(int x, int y)
         {
             point = new Point(x, y);
-            image = '.';
+            vertexChar = '.';
             angle = 0;
         }
 
@@ -29,7 +29,7 @@ namespace GazeusGamesEtapaTeste
                 0, 1, 0, axis.Y,
                 0, 0, 1, 1,
                 0, 0, 0, 1);
-                        
+
             double rad = (angle * (Math.PI)) / 180;
             float cos = (float)Math.Cos(rad);
             float sin = (float)Math.Sin(rad);
