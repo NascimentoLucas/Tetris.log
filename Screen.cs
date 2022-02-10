@@ -28,7 +28,6 @@ namespace GazeusGamesEtapaTeste
                     grid[index] = new Pixel(standardColor, emptySpace);
                 }
             }
-            Console.ForegroundColor = ConsoleColor.Green;
         }
 
         internal void Draw()
@@ -51,11 +50,6 @@ namespace GazeusGamesEtapaTeste
                 Console.ForegroundColor = standardColor;
                 Console.WriteLine($";");
             }
-        }
-
-        internal static int GetIndex(int vX, int vY)
-        {
-            return vX + (vY * col);
         }
 
         internal void DrawAt(int index, char v, ConsoleColor color)

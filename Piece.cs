@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
-using GazeusGamesEtapaTeste.Input;
+using GazeusGamesEtapaTeste.GazeusMath;
 
 namespace GazeusGamesEtapaTeste
 {
@@ -14,10 +14,6 @@ namespace GazeusGamesEtapaTeste
         int rot = 0;
         int id;
 
-        public int Id { get => id; }
-        public int Index { get => Screen.GetIndex(position.X, position.Y); }
-        public List<Vertex> Vertices { get => vertices; }
-        public Point Position { get => position; }
 
         public Piece(Screen screen, int x, int y, int id)
         {
@@ -30,7 +26,6 @@ namespace GazeusGamesEtapaTeste
                 new Vertex(0,1),
                 new Vertex(-1,0),
                 new Vertex(1,0),
-
             };
         }
 
@@ -48,22 +43,22 @@ namespace GazeusGamesEtapaTeste
             rot -= mov.Rotation;
         }
 
-        internal void Draw()
+        internal void RandomColorDraw()
         {
             Array values = Enum.GetValues(typeof(ConsoleColor));
             Random random = new Random();
             ConsoleColor randomColor = (ConsoleColor)values.GetValue(random.Next(values.Length));
             Draw((ConsoleColor)randomColor);
         }
+
         internal void Draw(ConsoleColor color)
         {
             foreach (Vertex vertex in vertices)
             {
                 Point p = vertex.GetTransformedPoint(position, rot);
-                int index = Screen.GetIndex(p.X, p.Y);
+                int index = MathG.GetIndex(p.X, p.Y);
                 screen.DrawAt(index, vertex.VertexChar, color);
             }
-
         }
 
         internal bool Colision(Piece otherPiece)

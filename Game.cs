@@ -32,7 +32,7 @@ namespace GazeusGamesEtapaTeste
                 Console.WriteLine($"Score: {score}.");
                 foreach (Piece p in pieces)
                 {
-                    p.Draw();
+                    p.RandomColorDraw();
                 }
                 currentPiece.Draw(FreePiecesColor);
                 screen.Draw();
