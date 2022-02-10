@@ -76,8 +76,6 @@ namespace GazeusGamesEtapaTeste
 
                     if (myPoint == otherPoint)
                     {
-                        Console.WriteLine(myPoint);
-                        Console.WriteLine(otherPoint);
                         return true;
                     }
                 }
@@ -94,7 +92,7 @@ namespace GazeusGamesEtapaTeste
                 Point p = v.Point;
                 int vY = y - p.Y;
 
-               if(vY >= Screen.col - 1)
+                if (vY >= Screen.col - 1)
                 {
                     return true;
                 }

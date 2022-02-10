@@ -21,6 +21,9 @@ namespace GazeusGamesEtapaTeste
 
             Dictionary<string, Input.Input> inputs = InputManager.GetInputs();
 
+            string keyFoward = "f";
+            
+
             bool running = true;
             string input;
 
@@ -39,22 +42,38 @@ namespace GazeusGamesEtapaTeste
                 {
                     Console.WriteLine($"{entry.Key}: {entry.Value.Description}.");
                 }
+                Console.WriteLine($"{keyFoward}: descer até o final.");
+
 
                 input = Console.ReadLine();
                 if (inputs.ContainsKey(input))
                     currentPiece.Move(inputs[input]);
                 CheckCurrentPiece();
 
+                if (input.Equals(keyFoward))
+                    Foward();
+
+
                 Thread.Sleep(500);
             }
+        }
+
+        private void Foward()
+        {
+            while (!currentPiece.IsAtLimit() && !Colision(currentPiece))
+                currentPiece.Move(InputManager.down);
+
+            if(Colision(currentPiece))
+                currentPiece.RevertMovement(InputManager.down);
+
+            NextPiece();
         }
 
         private void CheckCurrentPiece()
         {
             if (currentPiece.IsAtLimit())
             {
-                pieces.Add(currentPiece);
-                currentPiece = GetNewPiece();
+                NextPiece();
                 return;
             }
 
@@ -64,14 +83,18 @@ namespace GazeusGamesEtapaTeste
 
             if (colision)
             {
-                pieces.Add(currentPiece);
-                currentPiece = GetNewPiece();
+                NextPiece();
             }
+        }
+
+        private void NextPiece()
+        {
+            pieces.Add(currentPiece);
+            currentPiece = GetNewPiece();
         }
 
         private bool Colision(Piece currentPiece)
         {
-
             foreach (Piece piece in pieces)
             {
                 if (piece.Colision(currentPiece))
@@ -87,7 +110,7 @@ namespace GazeusGamesEtapaTeste
 
         private Piece GetNewPiece()
         {
-            return new Piece(screen, 3, 15, pieces.Count + 1);
+            return new Piece(screen, Screen.row / 2, 2, pieces.Count + 1);
         }
     }
 }
