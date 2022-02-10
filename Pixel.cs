@@ -9,12 +9,12 @@ namespace GazeusGamesEtapaTeste
     public struct Pixel
     {
         public ConsoleColor color;
-        public char image;
+        public char gridChar;
 
         public Pixel(ConsoleColor color, char image)
         {
             this.color = color;
-            this.image = image;
+            this.gridChar = image;
         }
     }
 }

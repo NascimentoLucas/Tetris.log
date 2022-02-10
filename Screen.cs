@@ -34,17 +34,17 @@ namespace GazeusGamesEtapaTeste
         internal void Draw()
         {
             Console.Clear();
+            Console.ForegroundColor = standardColor;
             for (int i = 0; i < col; i++)
             {
-                Console.ForegroundColor = standardColor;
                 Console.Write($"{i.ToString("00")}.");
                 for (int j = 0; j < row; j++)
                 {
                     int index = i * col;
                     index += j;
                     Console.ForegroundColor = grid[index].color;
-                    Console.Write(grid[index].image);
-                    grid[index].image = emptySpace;
+                    Console.Write(grid[index].gridChar);
+                    grid[index].gridChar = emptySpace;
                     grid[index].color = standardColor;
                 }
                 Console.ForegroundColor = standardColor;
@@ -52,12 +52,17 @@ namespace GazeusGamesEtapaTeste
             }
         }
 
+        internal int GetIndex(int vX, int vY)
+        {
+           return vX + (vY * col); 
+        }
+
         internal void DrawAt(int index, char v)
         {
             if (index < 0 || index > grid.Length - 1)
                 return;
 
-            grid[index].image = v;
+            grid[index].gridChar = v;
             grid[index].color = pieceColor;
         }
     }
