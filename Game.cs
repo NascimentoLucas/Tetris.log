@@ -32,7 +32,7 @@ namespace GazeusGamesEtapaTeste
                 Console.WriteLine($"Score: {score}.");
                 foreach (Piece p in pieces)
                 {
-                    p.Draw(BlockedPiecesColor);
+                    p.Draw();
                 }
                 currentPiece.Draw(FreePiecesColor);
                 screen.Draw();
@@ -57,44 +57,6 @@ namespace GazeusGamesEtapaTeste
 
                 Thread.Sleep(500);
             }
-        }
-
-        private bool CheckForPoint()
-        {
-            int count = 0;
-            List<Vertex> vertices;
-            Point p = new Point(0, 0);
-            foreach (Piece piece in pieces)
-            {
-                vertices = piece.Vertices;
-                foreach (Vertex vertex in vertices)
-                {
-                    p.Y = piece.Position.Y - vertex.Point.Y;
-                    if (p.Y >= Screen.col - 1)
-                    {
-                        count++;
-                    }
-                }
-            }
-            Console.WriteLine($"Count {count} at {Screen.col - 1}");
-            if (count >= Screen.row)
-            {
-                score++;
-                return true;
-                foreach (Piece piece in pieces)
-                {
-                    vertices = piece.Vertices;
-                    for (int i = vertices.Count - 1; i >= 0; i--)
-                    {
-                        if (vertices[i].Point.Y >= Screen.col - 1)
-                        {
-                            piece.RemoveVertex(i);
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
 
         private void Foward()
@@ -137,14 +99,35 @@ namespace GazeusGamesEtapaTeste
             }
         }
 
+        private bool CheckForPoint()
+        {
+            int count = 0;
+            foreach (Piece piece in pieces)
+            {
+                piece.GetVerticesAtLimit(ref count);
+            }
+
+            Console.WriteLine($"Count {count} at {Screen.col - 1}");
+            if (count >= Screen.row)
+            {
+                foreach (Piece piece in pieces)
+                {
+                    piece.RemoveVerticesAtLimit();
+                    piece.Move(InputManager.down);
+                }
+                score++;
+                return true;
+            }
+
+            return false;
+        }
+
         private bool Colision(Piece currentPiece)
         {
             foreach (Piece piece in pieces)
             {
                 if (piece.Colision(currentPiece))
                 {
-                    Console.WriteLine(piece.Id);
-                    Console.WriteLine(currentPiece.Id);
                     return true;
                 }
             }

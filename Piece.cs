@@ -48,15 +48,19 @@ namespace GazeusGamesEtapaTeste
             rot -= mov.Rotation;
         }
 
+        internal void Draw()
+        {
+            Array values = Enum.GetValues(typeof(ConsoleColor));
+            Random random = new Random();
+            ConsoleColor randomColor = (ConsoleColor)values.GetValue(random.Next(values.Length));
+            Draw((ConsoleColor)randomColor);
+        }
         internal void Draw(ConsoleColor color)
         {
             foreach (Vertex vertex in vertices)
             {
-                vertex.RotateTo(rot);
-                Point p = vertex.Point;
-                int vertexX = position.X + p.X;
-                int vertexY = position.Y - p.Y;
-                int index = Screen.GetIndex(vertexX, vertexY);
+                Point p = vertex.GetTransformedPoint(position, rot);
+                int index = Screen.GetIndex(p.X, p.Y);
                 screen.DrawAt(index, vertex.VertexChar, color);
             }
 
@@ -68,21 +72,17 @@ namespace GazeusGamesEtapaTeste
             Point otherPoint;
             foreach (Vertex myVertex in vertices)
             {
-                myPoint = new Point(position.X + myVertex.Point.X,
-                    position.Y - myVertex.Point.Y);
-
+                myPoint = myVertex.GetTransformedPoint(position, rot);
                 foreach (Vertex otherVertex in otherPiece.vertices)
                 {
-                    otherPoint = new Point(otherPiece.position.X + otherVertex.Point.X,
-                        otherPiece.position.Y - otherVertex.Point.Y);
-
+                    otherPoint = otherVertex.GetTransformedPoint(otherPiece.position
+                        , otherPiece.rot);
                     if (myPoint == otherPoint)
                     {
                         return true;
                     }
                 }
             }
-
             return false;
         }
 
@@ -90,11 +90,8 @@ namespace GazeusGamesEtapaTeste
         {
             foreach (Vertex v in vertices)
             {
-                v.RotateTo(rot);
-                Point p = v.Point;
-                int vY = position.Y - p.Y;
-
-                if (vY >= Screen.col - 1)
+                Point p = v.GetTransformedPoint(position, rot);
+                if (p.Y >= Screen.col - 1)
                 {
                     return true;
                 }
@@ -106,6 +103,31 @@ namespace GazeusGamesEtapaTeste
         internal void RemoveVertex(int i)
         {
             vertices.RemoveAt(i);
+        }
+
+        internal void GetVerticesAtLimit(ref int count)
+        {
+            foreach (Vertex v in vertices)
+            {
+                Point p = v.GetTransformedPoint(position, rot);
+                if (p.Y >= Screen.col - 1)
+                {
+                    count++;
+                }
+            }
+        }
+
+        internal void RemoveVerticesAtLimit()
+        {
+            for (int i = vertices.Count - 1; i >= 0; i--)
+            {
+                Point p = vertices[i].GetTransformedPoint(position, rot);
+
+                if (p.Y >= Screen.col - 1)
+                {
+                    vertices.RemoveAt(i);
+                }
+            }
         }
     }
 }

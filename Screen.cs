@@ -9,8 +9,8 @@ namespace GazeusGamesEtapaTeste
     public class Screen
     {
         public const string tapString = "                              ";
-        public const int col = 9;
-        public const int row = 9;
+        public const int col = 15;
+        public const int row = 15;
         const char emptySpace = '-';
 
         const ConsoleColor standardColor = ConsoleColor.White;
