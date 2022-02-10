@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using GazeusGamesEtapaTeste.Input;
 
 namespace GazeusGamesEtapaTeste
 {
@@ -9,7 +10,7 @@ namespace GazeusGamesEtapaTeste
         int x;
         int y;
         List<Vertex> vertices;
-        int rot = 90;
+        int rot = 0;
         public Piece(int x, int y)
         {
             this.x = x;
@@ -23,15 +24,15 @@ namespace GazeusGamesEtapaTeste
             };
         }
 
-        internal void Move(Point mov)
+        internal void Move(Input.Input mov)
         {
-            this.x += mov.X + InputManager.down.X;
-            this.y += mov.Y + InputManager.down.Y;
+            this.x += mov.Movement.X;
+            this.y += mov.Movement.Y + 1;
+            rot += mov.Rotation;
         }
 
         internal void Draw(Screen screen)
         {
-            rot += 90;
             foreach (Vertex v in vertices)
             {
                 v.RotateTo(rot);

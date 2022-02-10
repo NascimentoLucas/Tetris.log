@@ -37,7 +37,7 @@ namespace GazeusGamesEtapaTeste
             for (int i = 0; i < col; i++)
             {
                 Console.ForegroundColor = standardColor;
-                Console.Write($"{i}.");
+                Console.Write($"{i.ToString("00")}.");
                 for (int j = 0; j < row; j++)
                 {
                     int index = i * col;
