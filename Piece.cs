@@ -16,7 +16,7 @@ namespace GazeusGamesEtapaTeste
         int id;
 
         public int Id { get => id; }
-        public int Index { get => screen.GetIndex(x, y); }
+        public int Index { get => Screen.GetIndex(x, y); }
 
         public Piece(Screen screen, int x, int y, int id)
         {
@@ -55,7 +55,7 @@ namespace GazeusGamesEtapaTeste
                 Point p = vertex.Point;
                 int vertexX = x + p.X;
                 int vertexY = y - p.Y;
-                int index = screen.GetIndex(vertexX, vertexY);
+                int index = Screen.GetIndex(vertexX, vertexY);
                 screen.DrawAt(index, vertex.VertexChar, color);
             }
 

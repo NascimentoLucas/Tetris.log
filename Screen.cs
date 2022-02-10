@@ -8,6 +8,7 @@ namespace GazeusGamesEtapaTeste
 {
     public class Screen
     {
+        public const string tapString = "                              ";
         public const int col = 20;
         public const int row = 20;
         const char emptySpace = '-';
@@ -32,11 +33,12 @@ namespace GazeusGamesEtapaTeste
 
         internal void Draw()
         {
-            Console.Clear();
+            //Console.Clear();
             Console.ForegroundColor = standardColor;
             for (int i = 0; i < col; i++)
             {
-                Console.Write($"{i.ToString("00")}.");
+                Console.Write(tapString);
+                Console.Write($"{i.ToString("00")}.");                        
                 for (int j = 0; j < row; j++)
                 {
                     int index = i * col;
@@ -51,7 +53,7 @@ namespace GazeusGamesEtapaTeste
             }
         }
 
-        internal int GetIndex(int vX, int vY)
+        internal static int GetIndex(int vX, int vY)
         {
             return vX + (vY * col);
         }

@@ -8,6 +8,9 @@ namespace GazeusGamesEtapaTeste
 {
     public class Game
     {
+        const string KeyForward = "f";
+        private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
+        private const ConsoleColor FreePiecesColor = ConsoleColor.Green;
         Screen screen;
         List<Piece> pieces;
         Piece currentPiece;
@@ -21,7 +24,7 @@ namespace GazeusGamesEtapaTeste
 
             Dictionary<string, Input.Input> inputs = InputManager.GetInputs();
 
-            string keyFoward = "f";
+            
             
 
             bool running = true;
@@ -31,18 +34,18 @@ namespace GazeusGamesEtapaTeste
             {
                 foreach (Piece p in pieces)
                 {
-                    p.Draw(ConsoleColor.Blue);
+                    p.Draw(BlockedPiecesColor);
                 }
-                currentPiece.Draw(ConsoleColor.Green);
+                currentPiece.Draw(FreePiecesColor);
                 screen.Draw();
 
-                Console.WriteLine("Para jogar aperte: ");
+                Console.WriteLine($"{Screen.tapString}Para jogar aperte: ");
 
                 foreach (KeyValuePair<string, Input.Input> entry in inputs)
                 {
-                    Console.WriteLine($"{entry.Key}: {entry.Value.Description}.");
+                    Console.WriteLine($"{Screen.tapString}{entry.Key}: {entry.Value.Description}.");
                 }
-                Console.WriteLine($"{keyFoward}: descer até o final.");
+                Console.WriteLine($"{Screen.tapString}{KeyForward}: descer até o final.");
 
 
                 input = Console.ReadLine();
@@ -50,7 +53,7 @@ namespace GazeusGamesEtapaTeste
                     currentPiece.Move(inputs[input]);
                 CheckCurrentPiece();
 
-                if (input.Equals(keyFoward))
+                if (input.Equals(KeyForward))
                     Foward();
 
 
