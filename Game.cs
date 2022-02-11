@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using GazeusGamesEtapaTeste.Input;
+using GazeusGamesEtapaTeste.Pieces;
 
 namespace GazeusGamesEtapaTeste
 {
     public class Game
     {
+
         const string KeyForward = "f";
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
         private const ConsoleColor FreePiecesColor = ConsoleColor.Green;
@@ -20,7 +22,7 @@ namespace GazeusGamesEtapaTeste
             this.screen = screen;
 
             pieces = new List<Piece>();
-            currentPiece = GetNewPiece();
+            currentPiece = PieceFactory.GetNewPiece();
 
             Dictionary<string, Input.Input> inputs = InputManager.GetInputs();
 
@@ -32,9 +34,9 @@ namespace GazeusGamesEtapaTeste
                 Console.WriteLine($"Score: {score}.");
                 foreach (Piece p in pieces)
                 {
-                    p.RandomColorDraw();
+                    p.RandomColorDraw(screen);
                 }
-                currentPiece.Draw(FreePiecesColor);
+                currentPiece.Draw(screen, FreePiecesColor);
                 screen.Draw();
 
                 Console.WriteLine($"{Screen.tapString}Para jogar aperte: ");
@@ -91,7 +93,7 @@ namespace GazeusGamesEtapaTeste
         private void NextPiece()
         {
             pieces.Add(currentPiece);
-            currentPiece = GetNewPiece();
+            currentPiece = PieceFactory.GetNewPiece();
 
             if (CheckForPoint())
             {
@@ -133,11 +135,6 @@ namespace GazeusGamesEtapaTeste
             }
 
             return false;
-        }
-
-        private Piece GetNewPiece()
-        {
-            return new Piece(screen, Screen.row / 2, 2, pieces.Count + 1);
         }
     }
 }

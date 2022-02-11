@@ -3,31 +3,23 @@ using System.Drawing;
 using System.Collections.Generic;
 using GazeusGamesEtapaTeste.GazeusMath;
 
-namespace GazeusGamesEtapaTeste
+namespace GazeusGamesEtapaTeste.Pieces
 {
-    public class Piece
+    public abstract class Piece
     {
-        Screen screen;
         List<Vertex> vertices;
 
         Point position;
         int rot = 0;
-        int id;
 
 
-        public Piece(Screen screen, int x, int y, int id)
+        public Piece(int x, int y)
         {
-            this.screen = screen;
             position = new Point(x, y);
-            this.id = id;
-            vertices = new List<Vertex>()
-            {
-                new Vertex(0,0),
-                new Vertex(0,1),
-                new Vertex(-1,0),
-                new Vertex(1,0),
-            };
+            vertices = GenerateVertex();
         }
+
+        protected abstract List<Vertex> GenerateVertex();
 
         internal void Move(Input.Input mov)
         {
@@ -43,15 +35,15 @@ namespace GazeusGamesEtapaTeste
             rot -= mov.Rotation;
         }
 
-        internal void RandomColorDraw()
+        internal void RandomColorDraw(Screen screen)
         {
             Array values = Enum.GetValues(typeof(ConsoleColor));
             Random random = new Random();
             ConsoleColor randomColor = (ConsoleColor)values.GetValue(random.Next(values.Length));
-            Draw((ConsoleColor)randomColor);
+            Draw(screen, (ConsoleColor)randomColor);
         }
 
-        internal void Draw(ConsoleColor color)
+        internal void Draw(Screen screen, ConsoleColor color)
         {
             foreach (Vertex vertex in vertices)
             {
@@ -124,5 +116,7 @@ namespace GazeusGamesEtapaTeste
                 }
             }
         }
+
+
     }
 }
