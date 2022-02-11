@@ -5,25 +5,30 @@ namespace GazeusGamesEtapaTeste.Pieces
 {
     public static class PieceFactory
     {
-        static readonly Piece[] list = new Piece[]
-        {
-            //new LinePiece(Screen.row / 2, 2),
 
-            //new LLeftPiece(Screen.row / 2, 2),
-            //new LRightPiece(Screen.row / 2, 2),
+        static int count = -1;
 
-            //new SnakePiece(Screen.row / 2, 2),
-            //new SquarePiece(Screen.row / 2, 2),
-
-            //new StandingSnakePiece(Screen.row / 2, 2),
-            new TPiece(Screen.row / 2, 2),
-        };
-
-
-        static int count = 0;
         public static Piece GetNewPiece()
         {
-            return list[count % list.Length];
+            count++;
+            switch (count)
+            {
+                case 0:
+                    return new LinePiece(Screen.row / 2, 2);
+                case 1:
+                    return new LLeftPiece(Screen.row / 2, 2);
+                case 2:
+                    return new LRightPiece(Screen.row / 2, 2);
+                case 3:
+                    return new SnakePiece(Screen.row / 2, 2);
+                case 4:
+                    return new SquarePiece(Screen.row / 2, 2);
+                case 5:
+                    return new StandingSnakePiece(Screen.row / 2, 2);
+            }
+            count = 0;
+            return new TPiece(Screen.row / 2, 2);
         }
+
     }
 }
