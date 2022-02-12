@@ -50,5 +50,13 @@ namespace GazeusGamesEtapaTeste.Table
 
             return vertices[x] != null;
         }
+
+        internal void RemoveAll()
+        {
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i] = null;
+            }
+        }
     }
 }

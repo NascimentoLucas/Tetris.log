@@ -60,5 +60,20 @@ namespace GazeusGamesEtapaTeste.Table
 
             return false;
         }
+
+        internal int GetScore()
+        {
+            int score = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].IsAllFill())
+                {
+                    score++;
+                    lines[i].RemoveAll();
+                }
+            }
+
+            return score;
+        }
     }
 }

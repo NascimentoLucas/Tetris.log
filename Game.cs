@@ -120,7 +120,8 @@ namespace GazeusGamesEtapaTeste
 
         private void CheckForPoint()
         {
-            //throw new NotImplementedException();
+            int roundScore = lineManager.GetScore();
+            score += roundScore;
         }
 
         private bool Colision(Piece currentPiece)
