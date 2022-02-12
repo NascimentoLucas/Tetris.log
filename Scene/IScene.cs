@@ -10,5 +10,6 @@ namespace GazeusGamesEtapaTeste.Scene
     {
         void Input(ConsoleKey key);
         void Draw();
+        void Update();
     }
 }

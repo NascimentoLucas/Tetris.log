@@ -31,14 +31,14 @@ namespace GazeusGamesEtapaTeste.Pieces
         internal void Move(Input.Input mov)
         {
             position.X += mov.Movement.X;
-            position.Y += mov.Movement.Y + 1;
+            position.Y += mov.Movement.Y;
             angle += mov.Rotation;
         }
 
         internal void RevertMovement(Input.Input mov)
         {
             position.X -= mov.Movement.X;
-            position.Y -= mov.Movement.Y + 1;
+            position.Y -= mov.Movement.Y;
             angle -= mov.Rotation;
         }
 

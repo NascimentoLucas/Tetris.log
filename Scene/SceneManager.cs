@@ -14,18 +14,22 @@ namespace GazeusGamesEtapaTeste.Scene
         IScene currentScene;
 
         bool running;
+        bool canDraw;
 
         public SceneManager(IScene currentScene)
         {
             Singleton = this;
 
+            canDraw = true;
             running = true;
             this.currentScene = currentScene;
+
             Thread threadInput = new Thread(Input);
             threadInput.Start();
 
-            Thread threadDraw = new Thread(Draw);
+            Thread threadDraw = new Thread(Update);
             threadDraw.Start();
+
         }
 
         void Input()
@@ -35,16 +39,20 @@ namespace GazeusGamesEtapaTeste.Scene
             {
                 key = Console.ReadKey().Key;
                 currentScene.Input(key);
-                Draw();
+                canDraw = true;
             }
         }
 
-        void Draw()
+        void Update()
         {
             while (running)
             {
-                currentScene.Draw();
-                Thread.Sleep(frameTime);
+                currentScene.Update();
+                if (canDraw)
+                {
+                    currentScene.Draw();
+                    canDraw = false;
+                }
             }
         }
 

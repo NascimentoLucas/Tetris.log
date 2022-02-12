@@ -58,38 +58,36 @@ namespace GazeusGamesEtapaTeste.GameCore
             updateScreen = true;
         }
 
+        public void Update()
+        {
+            lineManager.MoveLinesDown();
+            if ((DateTime.Now - lastTime).TotalSeconds >= 1)
+            {
+                AutoPieceMovement();
+                lastTime = DateTime.Now;
+                Draw();
+            }
+        }
+
         public void Input(ConsoleKey key)
         {
-            if (!lineManager.MoveLinesDown())
+            if (inputs.ContainsKey(key))
+                currentPiece.Move(inputs[key]);
+
+            if (key.Equals(KeyForward))
+                Foward();
+            else
             {
-                if ((DateTime.Now - lastTime).TotalSeconds >= 1)
+                if (!IsTheMovementValid())
                 {
-                    //AutoPieceMovement();
-                    //lastTime = DateTime.Now;
-                    //return;
+                    currentPiece.RevertMovement(inputs[key]);
                 }
-
-                Console.WriteLine(key);
-
-                if (inputs.ContainsKey(key))
-                    currentPiece.Move(inputs[key]);
-
-                if (key.Equals(KeyForward))
-                    Foward();
                 else
                 {
-                    if (!IsTheMovementValid())
-                    {
-                        currentPiece.RevertMovement(inputs[key]);
-                    }
-                    else
-                    {
-                        CheckCurrentPiece();
-                    }
+                    CheckCurrentPiece();
                 }
-                updateScreen = true;
-
             }
+            updateScreen = true;
         }
 
         public void Draw()

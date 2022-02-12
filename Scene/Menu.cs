@@ -10,10 +10,17 @@ namespace GazeusGamesEtapaTeste.Scene
     {
         public void Draw()
         {
+            throw new NotImplementedException();
         }
 
         public void Input(ConsoleKey key)
         {
+            throw new NotImplementedException();
+        }
+
+        public void Update()
+        {
+            throw new NotImplementedException();
         }
     }
 }
