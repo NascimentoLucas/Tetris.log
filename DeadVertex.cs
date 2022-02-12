@@ -10,14 +10,17 @@ namespace GazeusGamesEtapaTeste
     {
         Point point;
         char vertexChar;
+        ConsoleColor color;
 
         public Point Point { get => point; }
         public char VertexChar { get => vertexChar; }
+        public ConsoleColor Color { get => color; }
 
-        public DeadVertex(Point point, char vertexChar)
+        public DeadVertex(Point point, char vertexChar, ConsoleColor color)
         {
             this.point = point;
             this.vertexChar = vertexChar;
+            this.color = color;
         }
     }
 }

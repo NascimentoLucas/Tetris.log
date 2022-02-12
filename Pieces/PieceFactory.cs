@@ -27,7 +27,7 @@ namespace GazeusGamesEtapaTeste.Pieces
                 case 5:
                     return new StandingSnakePiece(middle, 2);
             }
-            count = 0;
+            count = -1;
             return new TPiece(middle, 2);
         }
 

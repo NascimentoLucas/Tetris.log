@@ -9,13 +9,16 @@ namespace GazeusGamesEtapaTeste
     {
         Point point;
         char vertexChar;
+        ConsoleColor color;
 
         public char VertexChar { get => vertexChar; }
+        public ConsoleColor Color { get => color;  }
 
-        public Vertex(int x, int y)
+        public Vertex(int x, int y, ConsoleColor color)
         {
             point = new Point(x, y);
             vertexChar = '.';
+            this.color = color;
         }
 
 
@@ -30,7 +33,7 @@ namespace GazeusGamesEtapaTeste
         internal DeadVertex GetDeadVertex(Point position, int angle)
         {
             Point p = GetTransformedPoint(position, angle);
-            return new DeadVertex(p, vertexChar);
+            return new DeadVertex(p, vertexChar, color);
         }
     }
 }

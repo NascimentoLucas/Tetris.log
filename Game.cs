@@ -9,7 +9,7 @@ namespace GazeusGamesEtapaTeste
 {
     public class Game
     {
-        const ConsoleKey KeyForward = ConsoleKey.F;
+        const ConsoleKey KeyForward = ConsoleKey.Spacebar;
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
         private const ConsoleColor FreePiecesColor = ConsoleColor.Green;
 
@@ -21,6 +21,7 @@ namespace GazeusGamesEtapaTeste
         int score;
         bool running;
         bool updateScreen;
+        volatile bool blockNextInput;
 
         public Game(Screen screen)
         {
@@ -32,15 +33,19 @@ namespace GazeusGamesEtapaTeste
             inputs = InputManager.GetInputs();
             score = 0;
             running = true;
-            Thread thread = new Thread(PlayerInput);
-            thread.IsBackground = true;
-            thread.Start();
+
+            Thread threadInput = new Thread(PlayerInput);
+            threadInput.Start();
+
+            Thread threadAutoMovement = new Thread(AutoPieceMovement);
+            threadAutoMovement.Start();
+
             GameLoop();
-            Draw();
         }
 
         private void GameLoop()
         {
+            Draw();
             while (running)
             {
                 if (updateScreen)
@@ -55,6 +60,22 @@ namespace GazeusGamesEtapaTeste
             }
         }
 
+        private void AutoPieceMovement()
+        {
+            while (running)
+            {
+                Thread.Sleep(1000);
+                blockNextInput = true;
+
+                currentPiece.Move(InputManager.down);
+
+                CheckCurrentPiece();
+
+                blockNextInput = false;
+                updateScreen = true;
+            }
+        }
+
         private void PlayerInput()
         {
             ConsoleKey key;
@@ -63,6 +84,9 @@ namespace GazeusGamesEtapaTeste
                 if (!lineManager.MoveLinesDown())
                 {
                     key = Console.ReadKey().Key;
+                    if (blockNextInput)
+                        continue;
+
                     if (inputs.ContainsKey(key))
                         currentPiece.Move(inputs[key]);
 
@@ -88,11 +112,11 @@ namespace GazeusGamesEtapaTeste
 
         private void Draw()
         {
-            Screen.WriteLine($"Score: {score}.");
             lineManager.DrawLines(screen, BlockedPiecesColor);
             currentPiece.Draw(screen, FreePiecesColor);
             screen.Draw();
 
+            Screen.WriteLine($"{Screen.tapString}Score: {score}.");
             Screen.WriteLine($"{Screen.tapString}Para jogar aperte: ");
 
             foreach (KeyValuePair<ConsoleKey, Input.Input> entry in inputs)
@@ -104,15 +128,17 @@ namespace GazeusGamesEtapaTeste
 
         private bool IsTheMovementValid()
         {
-            return !currentPiece.IsAtWidthLimit(Screen.col) && !Colision(currentPiece);
+            return !currentPiece.IsAtWidthLimit(Screen.col) 
+                && !lineManager.Colision(currentPiece);
         }
 
         private void Foward()
         {
-            while (!currentPiece.IsAtHightLimit(Screen.row - 1) && !Colision(currentPiece))
+            while (!currentPiece.IsAtHightLimit(Screen.row - 1) 
+                && !lineManager.Colision(currentPiece))
                 currentPiece.Move(InputManager.down);
 
-            if (Colision(currentPiece))
+            if (lineManager.Colision(currentPiece))
                 currentPiece.RevertMovement(InputManager.down);
 
             NextPiece();
@@ -127,7 +153,7 @@ namespace GazeusGamesEtapaTeste
             }
 
             currentPiece.Move(InputManager.down);
-            bool colision = Colision(currentPiece);
+            bool colision = lineManager.Colision(currentPiece);
             currentPiece.RevertMovement(InputManager.down);
 
             if (colision)
@@ -141,17 +167,18 @@ namespace GazeusGamesEtapaTeste
             lineManager.GetVertexFromPiece(currentPiece);
             CheckForPoint();
             currentPiece = PieceFactory.GetNewPiece();
+
+            running = !lineManager.Colision(currentPiece);
+            if (!running)
+            {
+                Console.WriteLine("OI");
+            }
         }
 
         private void CheckForPoint()
         {
             int roundScore = lineManager.GetScore();
             score += roundScore;
-        }
-
-        private bool Colision(Piece currentPiece)
-        {
-            return lineManager.Colision(currentPiece);
         }
     }
 }

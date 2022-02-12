@@ -64,7 +64,7 @@ namespace GazeusGamesEtapaTeste.Pieces
             {
                 Point p = vertex.GetTransformedPoint(position, angle);
                 int index = MathG.GetIndex(p.Y, p.X);
-                screen.DrawAt(index, vertex.VertexChar, color);
+                screen.DrawAt(index, vertex.VertexChar, vertex.Color);
             }
         }
 

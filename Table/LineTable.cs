@@ -39,7 +39,8 @@ namespace GazeusGamesEtapaTeste.Table
                 throw new ArgumentException($"index out of range");
 
             if (vertices[x] != null)
-                throw new ArgumentException($"index ({x}) alreday have {nameof(Vertex)} ");
+                //throw new ArgumentException($"index ({x}) alreday have {nameof(Vertex)} ");
+                return;
 
             vertices[x] = vertex;
         }
@@ -50,7 +51,7 @@ namespace GazeusGamesEtapaTeste.Table
             {
                 if (vertex == null) continue;
                 int index = MathG.GetIndex(myIndex, vertex.Point.X);
-                screen.DrawAt(index, vertex.VertexChar, color);
+                screen.DrawAt(index, vertex.VertexChar, vertex.Color);
             }
         }
 

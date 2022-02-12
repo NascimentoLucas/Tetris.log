@@ -16,10 +16,10 @@ namespace GazeusGamesEtapaTeste.Pieces.Types
         {
             return new List<Vertex>()
             {
-                new Vertex(0,0),
-                new Vertex(-1,0),
-                new Vertex(1,0),
-                new Vertex(1,1),
+                new Vertex(0, 0, ConsoleColor.DarkYellow),
+                new Vertex(-1, 0, ConsoleColor.DarkYellow),
+                new Vertex(1, 0, ConsoleColor.DarkYellow),
+                new Vertex(1, 1, ConsoleColor.DarkYellow),
             };
         }
     }
