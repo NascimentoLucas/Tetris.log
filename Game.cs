@@ -122,6 +122,9 @@ namespace GazeusGamesEtapaTeste
         {
             int roundScore = lineManager.GetScore();
             score += roundScore;
+
+            if(roundScore > 0)
+                lineManager.MoveLinesDown();
         }
 
         private bool Colision(Piece currentPiece)

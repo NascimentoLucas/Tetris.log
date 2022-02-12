@@ -14,18 +14,8 @@ namespace GazeusGamesEtapaTeste.Table
             lines = new LineTable[Screen.row];
             for (int i = 0; i < lines.Length; i++)
             {
-                lines[i] = new LineTable();
+                lines[i] = new LineTable(this, i);
             }
-        }
-
-        public void AddVertex(Point p, DeadVertex vertex)
-        {
-            lines[p.Y].AddVertexAt(p.X, vertex);
-        }
-
-        public bool IsFillAt(int y)
-        {
-            return lines[y].IsAllFill();
         }
 
         internal void DrawLines(Screen screen, ConsoleColor color)
@@ -48,7 +38,6 @@ namespace GazeusGamesEtapaTeste.Table
 
         internal bool Colision(Piece currentPiece)
         {
-
             foreach (Vertex vertex in currentPiece.Vertices)
             {
                 Point p = vertex.GetTransformedPoint(currentPiece.Position,
@@ -69,11 +58,43 @@ namespace GazeusGamesEtapaTeste.Table
                 if (lines[i].IsAllFill())
                 {
                     score++;
-                    lines[i].RemoveAll();
+                    lines[i].EmptyLine();
                 }
             }
 
             return score;
+        }
+
+        internal void MoveLinesDown()
+        {
+            bool repeat;
+            bool result;
+            do
+            {
+                repeat = false;
+                for (int i = lines.Length - 2; i >= 0; i--)
+                {
+                    result = lines[i].CheckUnderLine();
+                    repeat = repeat || result;
+                }
+            } while (repeat);
+        }
+
+        internal bool IsAValidIndex(int underLineIndex)
+        {
+            return underLineIndex < lines.Length;
+        }
+
+        internal void SwapLines(int above, int under)
+        {
+            LineTable temp = lines[under];
+            lines[under] = lines[above];
+            lines[above] = temp;
+        }
+
+        internal LineTable GetLine(int index)
+        {
+            return lines[index];
         }
     }
 }

@@ -12,7 +12,6 @@ namespace GazeusGamesEtapaTeste.Pieces
         {
             count++;
             int middle = Screen.col / 2;
-            count = 0;
             switch (count)
             {
                 case 0:

@@ -5,9 +5,20 @@ namespace GazeusGamesEtapaTeste.Table
 {
     public class LineTable
     {
+        LineManager manager;
         DeadVertex[] vertices;
-        public LineTable()
+        int myIndex;
+
+        bool wasEmptied;
+
+        public bool WasEmptied { get => wasEmptied; }
+        public int UnderLineIndex { get => myIndex + 1; }
+
+        public LineTable(LineManager manager, int underLineIndex)
         {
+            this.manager = manager;
+            this.myIndex = underLineIndex;
+            wasEmptied = false;
             vertices = new DeadVertex[Screen.col];
         }
 
@@ -38,7 +49,7 @@ namespace GazeusGamesEtapaTeste.Table
             foreach (DeadVertex vertex in vertices)
             {
                 if (vertex == null) continue;
-                int index = MathG.GetIndex(vertex.Point.Y, vertex.Point.X);
+                int index = MathG.GetIndex(myIndex, vertex.Point.X);
                 screen.DrawAt(index, vertex.VertexChar, color);
             }
         }
@@ -51,12 +62,28 @@ namespace GazeusGamesEtapaTeste.Table
             return vertices[x] != null;
         }
 
-        internal void RemoveAll()
+        internal void EmptyLine()
         {
+            wasEmptied = true;
             for (int i = 0; i < vertices.Length; i++)
             {
                 vertices[i] = null;
             }
+        }
+
+        internal bool CheckUnderLine()
+        {
+            if (!manager.IsAValidIndex(UnderLineIndex)) return false;
+
+            LineTable underLine = manager.GetLine(UnderLineIndex);
+            if (underLine.wasEmptied)
+            {
+                manager.SwapLines(myIndex, UnderLineIndex);
+                myIndex++;
+                return true;
+            }
+
+            return false;
         }
     }
 }
