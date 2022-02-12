@@ -31,7 +31,7 @@ namespace GazeusGamesEtapaTeste
 
             while (running)
             {
-                Console.WriteLine($"Score: {score}.");
+                Screen.WriteLine($"Score: {score}.");
                 foreach (Piece p in pieces)
                 {
                     p.Draw(screen, BlockedPiecesColor);
@@ -39,13 +39,13 @@ namespace GazeusGamesEtapaTeste
                 currentPiece.Draw(screen, FreePiecesColor);
                 screen.Draw();
 
-                Console.WriteLine($"{Screen.tapString}Para jogar aperte: ");
+                Screen.WriteLine($"{Screen.tapString}Para jogar aperte: ");
 
                 foreach (KeyValuePair<string, Input.Input> entry in inputs)
                 {
-                    Console.WriteLine($"{Screen.tapString}{entry.Key}: {entry.Value.Description}.");
+                    Screen.WriteLine($"{Screen.tapString}{entry.Key}: {entry.Value.Description}.");
                 }
-                Console.WriteLine($"{Screen.tapString}{KeyForward}: descer até o final.");
+                Screen.WriteLine($"{Screen.tapString}{KeyForward}: descer até o final.");
 
 
                 input = Console.ReadLine();
@@ -93,15 +93,15 @@ namespace GazeusGamesEtapaTeste
         private void NextPiece()
         {
             pieces.Add(currentPiece);
-            currentPiece = PieceFactory.GetNewPiece(); 
             CheckForPoint();
+            currentPiece = PieceFactory.GetNewPiece();
         }
 
-        private bool CheckForPoint()
+        private void CheckForPoint()
         {
             int count = 0;
             int start = Screen.row - 1;
-
+            int amountScoreDone = 0;
             for (int i = start; i >= 1; i--)
             {
                 foreach (Piece piece in pieces)
@@ -109,22 +109,29 @@ namespace GazeusGamesEtapaTeste
                     piece.GetVerticesAtLimit(ref count, i);
                 }
 
-                if(count != 0)
-                Console.WriteLine($"Count {count} at {i}");
+                //if (count != 0)
+                //    Screen.WriteLine($"Count {count} at {i}");
                 if (count >= Screen.col)
                 {
                     foreach (Piece piece in pieces)
                     {
                         piece.RemoveVerticesAtLimit(i);
-                        piece.Move(InputManager.down);
                     }
                     score++;
-                    return true;
+                    amountScoreDone++;
                 }
                 count = 0;
             }
 
-            return false;   
+
+            for (int i = 0; i < amountScoreDone; i++)
+            {
+                foreach (Piece piece in pieces)
+                {
+                    piece.Move(InputManager.down);
+                }
+            }
+
         }
 
         private bool Colision(Piece currentPiece)

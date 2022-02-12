@@ -99,7 +99,6 @@ namespace GazeusGamesEtapaTeste.Pieces
                 Point p = v.GetTransformedPoint(position, rot);
                 if (p.Y == limit)
                 {
-                    Console.WriteLine(p.Y);
                     count++;
                 }
             }

@@ -30,24 +30,34 @@ namespace GazeusGamesEtapaTeste
             }
         }
 
+        public static void WriteLine(object obj)
+        {
+            Console.WriteLine(obj);
+        }
+
+        public static void Write(object obj)
+        {
+            Console.Write(obj);
+        }
+
         internal void Draw()
         {
             //Console.Clear();
             Console.ForegroundColor = standardColor;
             for (int i = 0; i < row; i++)
             {
-                Console.Write(tapString);
-                Console.Write($"{i.ToString("00")};");
+                Write(tapString);
+                Write($"");
                 for (int j = 0; j < col; j++)
                 {
                     int index = GazeusMath.MathG.GetIndex(i, j);
                     Console.ForegroundColor = grid[index].color;
-                    Console.Write(grid[index].gridChar);
+                    Write(grid[index].gridChar);
                     grid[index].gridChar = emptySpace;
                     grid[index].color = standardColor;
                 }
                 Console.ForegroundColor = standardColor;
-                Console.WriteLine($";");
+                WriteLine($"");
             }
         }
 
