@@ -13,16 +13,16 @@ namespace GazeusGamesEtapaTeste.Input
         public static readonly Input rotLeft = new Input(new Point(0, 0), 90, "Girar para Esquerda");
         public static readonly Input rotRight = new Input(new Point(0, 0), -90, "Girar para Direita");
 
-        internal static Dictionary<string, Input> GetInputs()
+        internal static Dictionary<ConsoleKey, Input> GetInputs()
         {
 
-            return new Dictionary<string, Input>()
+            return new Dictionary<ConsoleKey, Input>()
             {
-                ["d"] = right,
-                ["a"] = left,
-                ["q"] = rotLeft,
-                ["e"] = rotRight,
-                ["s"] = down,
+                [ConsoleKey.D] = right,
+                [ConsoleKey.A] = left,
+                [ConsoleKey.Q] = rotLeft,
+                [ConsoleKey.E] = rotRight,
+                [ConsoleKey.S] = down,
             };
         }
     }

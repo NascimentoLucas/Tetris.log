@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading;
 using GazeusGamesEtapaTeste.Input;
 using GazeusGamesEtapaTeste.Pieces;
@@ -10,17 +9,18 @@ namespace GazeusGamesEtapaTeste
 {
     public class Game
     {
-        const string KeyForward = "f";
+        const ConsoleKey KeyForward = ConsoleKey.F;
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
         private const ConsoleColor FreePiecesColor = ConsoleColor.Green;
 
         Screen screen;
         Piece currentPiece;
         LineManager lineManager;
-        Dictionary<string, Input.Input> inputs;
+        Dictionary<ConsoleKey, Input.Input> inputs;
 
         int score;
         bool running;
+        bool updateScreen;
 
         public Game(Screen screen)
         {
@@ -32,52 +32,74 @@ namespace GazeusGamesEtapaTeste
             inputs = InputManager.GetInputs();
             score = 0;
             running = true;
+            Thread thread = new Thread(PlayerInput);
+            thread.IsBackground = true;
+            thread.Start();
             GameLoop();
+            Draw();
         }
 
         private void GameLoop()
         {
-            string input;
             while (running)
             {
-                Screen.WriteLine($"Score: {score}.");
-                lineManager.DrawLines(screen, BlockedPiecesColor);
-                currentPiece.Draw(screen, FreePiecesColor);
-                screen.Draw();
-
-                Screen.WriteLine($"{Screen.tapString}Para jogar aperte: ");
-
-                foreach (KeyValuePair<string, Input.Input> entry in inputs)
+                if (updateScreen)
                 {
-                    Screen.WriteLine($"{Screen.tapString}{entry.Key}: {entry.Value.Description}.");
+                    updateScreen = false;
                 }
-                Screen.WriteLine($"{Screen.tapString}{KeyForward}: descer até o final.");
+                else
+                {
+                    continue;
+                }
+                Draw();
+            }
+        }
 
+        private void PlayerInput()
+        {
+            ConsoleKey key;
+            while (running)
+            {
                 if (!lineManager.MoveLinesDown())
                 {
+                    key = Console.ReadKey().Key;
+                    if (inputs.ContainsKey(key))
+                        currentPiece.Move(inputs[key]);
 
-                    input = Console.ReadLine();
-                    if (inputs.ContainsKey(input))
-                        currentPiece.Move(inputs[input]);
-
-                    if (input.Equals(KeyForward))
+                    if (key.Equals(KeyForward))
                         Foward();
                     else
                     {
                         if (!IsTheMovementValid())
                         {
-                            currentPiece.RevertMovement(inputs[input]);
+                            currentPiece.RevertMovement(inputs[key]);
                         }
                         else
                         {
                             CheckCurrentPiece();
                         }
                     }
+                    updateScreen = true;
 
                 }
-
-                Thread.Sleep(500);
             }
+
+        }
+
+        private void Draw()
+        {
+            Screen.WriteLine($"Score: {score}.");
+            lineManager.DrawLines(screen, BlockedPiecesColor);
+            currentPiece.Draw(screen, FreePiecesColor);
+            screen.Draw();
+
+            Screen.WriteLine($"{Screen.tapString}Para jogar aperte: ");
+
+            foreach (KeyValuePair<ConsoleKey, Input.Input> entry in inputs)
+            {
+                Screen.WriteLine($"{Screen.tapString}{entry.Key}: {entry.Value.Description}.");
+            }
+            Screen.WriteLine($"{Screen.tapString}{KeyForward}: descer até o final.");
         }
 
         private bool IsTheMovementValid()
