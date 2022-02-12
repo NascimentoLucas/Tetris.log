@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Globalization;
 using GazeusGamesEtapaTeste.Input;
 using GazeusGamesEtapaTeste.Pieces;
 using GazeusGamesEtapaTeste.Table;
+using GazeusGamesEtapaTeste.Scene;
 
-namespace GazeusGamesEtapaTeste
+namespace GazeusGamesEtapaTeste.GameCore
 {
-    public class Game
+    public class Game : IScene
     {
         const ConsoleKey KeyForward = ConsoleKey.Spacebar;
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
@@ -17,124 +18,105 @@ namespace GazeusGamesEtapaTeste
         Piece currentPiece;
         LineManager lineManager;
         Dictionary<ConsoleKey, Input.Input> inputs;
+        DateTime lastTime;
 
         int score;
-        bool running;
         bool updateScreen;
-        volatile bool blockNextInput;
 
-        public Game(Screen screen)
+
+        public Game()
         {
-            this.screen = screen;
+            lastTime = DateTime.Now;
+            screen = new Screen();
 
             currentPiece = PieceFactory.GetNewPiece();
             lineManager = new LineManager();
 
             inputs = InputManager.GetInputs();
             score = 0;
-            running = true;
-
-            Thread threadInput = new Thread(PlayerInput);
-            threadInput.Start();
-
-            Thread threadAutoMovement = new Thread(AutoPieceMovement);
-            threadAutoMovement.Start();
 
             GameLoop();
         }
 
         private void GameLoop()
         {
-            Draw();
-            while (running)
+            if (updateScreen)
             {
-                if (updateScreen)
+                updateScreen = false;
+            }
+            else
+            {
+                return;
+            }
+            Draw();
+        }
+
+        public void AutoPieceMovement()
+        {
+            currentPiece.Move(InputManager.down);
+            CheckCurrentPiece();
+            updateScreen = true;
+        }
+
+        public void Input(ConsoleKey key)
+        {
+            if (!lineManager.MoveLinesDown())
+            {
+                if ((DateTime.Now - lastTime).TotalSeconds >= 1)
                 {
-                    updateScreen = false;
+                    //AutoPieceMovement();
+                    //lastTime = DateTime.Now;
+                    //return;
                 }
+
+                Console.WriteLine(key);
+
+                if (inputs.ContainsKey(key))
+                    currentPiece.Move(inputs[key]);
+
+                if (key.Equals(KeyForward))
+                    Foward();
                 else
                 {
-                    continue;
-                }
-                Draw();
-            }
-        }
-
-        private void AutoPieceMovement()
-        {
-            while (running)
-            {
-                Thread.Sleep(1000);
-                blockNextInput = true;
-
-                currentPiece.Move(InputManager.down);
-
-                CheckCurrentPiece();
-
-                blockNextInput = false;
-                updateScreen = true;
-            }
-        }
-
-        private void PlayerInput()
-        {
-            ConsoleKey key;
-            while (running)
-            {
-                if (!lineManager.MoveLinesDown())
-                {
-                    key = Console.ReadKey().Key;
-                    if (blockNextInput)
-                        continue;
-
-                    if (inputs.ContainsKey(key))
-                        currentPiece.Move(inputs[key]);
-
-                    if (key.Equals(KeyForward))
-                        Foward();
+                    if (!IsTheMovementValid())
+                    {
+                        currentPiece.RevertMovement(inputs[key]);
+                    }
                     else
                     {
-                        if (!IsTheMovementValid())
-                        {
-                            currentPiece.RevertMovement(inputs[key]);
-                        }
-                        else
-                        {
-                            CheckCurrentPiece();
-                        }
+                        CheckCurrentPiece();
                     }
-                    updateScreen = true;
-
                 }
-            }
+                updateScreen = true;
 
+            }
         }
 
-        private void Draw()
+        public void Draw()
         {
             lineManager.DrawLines(screen, BlockedPiecesColor);
             currentPiece.Draw(screen, FreePiecesColor);
             screen.Draw();
 
-            Screen.WriteLine($"{Screen.tapString}Score: {score}.");
-            Screen.WriteLine($"{Screen.tapString}Para jogar aperte: ");
+            Screen.WriteLine($"{SceneManager.tapString}Score: {score}.");
+            Screen.WriteLine($"{SceneManager.tapString}Para jogar aperte: ");
 
             foreach (KeyValuePair<ConsoleKey, Input.Input> entry in inputs)
             {
-                Screen.WriteLine($"{Screen.tapString}{entry.Key}: {entry.Value.Description}.");
+                Screen.WriteLine($"{SceneManager.tapString}{entry.Key}: {entry.Value.Description}.");
             }
-            Screen.WriteLine($"{Screen.tapString}{KeyForward}: descer até o final.");
+            Screen.WriteLine($"{SceneManager.tapString}{KeyForward}: descer até o final.");
         }
 
         private bool IsTheMovementValid()
         {
-            return !currentPiece.IsAtWidthLimit(Screen.col) 
+            return !currentPiece.IsAtWidthLimit(Screen.col)
                 && !lineManager.Colision(currentPiece);
         }
 
         private void Foward()
         {
-            while (!currentPiece.IsAtHightLimit(Screen.row - 1) 
+            while (!currentPiece.IsAtHightLimit(Screen.row - 1)
                 && !lineManager.Colision(currentPiece))
                 currentPiece.Move(InputManager.down);
 
@@ -168,10 +150,10 @@ namespace GazeusGamesEtapaTeste
             CheckForPoint();
             currentPiece = PieceFactory.GetNewPiece();
 
-            running = !lineManager.Colision(currentPiece);
+            bool running = !lineManager.Colision(currentPiece);
             if (!running)
             {
-                Console.WriteLine("OI");
+                SceneManager.Singleton.ChangeScene(new Menu());
             }
         }
 

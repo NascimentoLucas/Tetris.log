@@ -1,5 +1,6 @@
 ﻿using System;
 using GazeusGamesEtapaTeste.GazeusMath;
+using GazeusGamesEtapaTeste.GameCore;
 
 namespace GazeusGamesEtapaTeste.Table
 {

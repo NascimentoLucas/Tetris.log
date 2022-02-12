@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GazeusGamesEtapaTeste.Scene;
 
-namespace GazeusGamesEtapaTeste
+namespace GazeusGamesEtapaTeste.GameCore
 {
     public class Screen
     {
-        public const string tapStringStandard = "                    ";
-        public static readonly string tapString = $"{tapStringStandard}{tapStringStandard}{tapStringStandard}";
         public const int col = 10;
         public const int row = 20;
         const char emptySpace = '-';
@@ -46,7 +41,7 @@ namespace GazeusGamesEtapaTeste
             Console.ForegroundColor = standardColor;
             for (int i = 0; i < row; i++)
             {
-                Write(tapString);
+                Write(SceneManager.tapString);
                 Write($"");
                 for (int j = 0; j < col; j++)
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using GazeusGamesEtapaTeste.Pieces;
+using GazeusGamesEtapaTeste.GameCore;
 
 namespace GazeusGamesEtapaTeste.Table
 {

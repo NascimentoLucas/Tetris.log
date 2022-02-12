@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Collections.Generic;
 using GazeusGamesEtapaTeste.GazeusMath;
+using GazeusGamesEtapaTeste.GameCore;
 
 namespace GazeusGamesEtapaTeste.Pieces
 {

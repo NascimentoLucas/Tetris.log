@@ -1,5 +1,6 @@
 ﻿using System;
 using GazeusGamesEtapaTeste.Pieces.Types;
+using GazeusGamesEtapaTeste.GameCore;
 
 namespace GazeusGamesEtapaTeste.Pieces
 {

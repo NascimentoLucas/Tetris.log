@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Drawing;
+using GazeusGamesEtapaTeste.GameCore;
 
 
 namespace GazeusGamesEtapaTeste.GazeusMath

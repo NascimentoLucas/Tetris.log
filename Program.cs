@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Threading;
-using GazeusGamesEtapaTeste.Input;
+using GazeusGamesEtapaTeste.Scene;
+using GazeusGamesEtapaTeste.GameCore;
 
 namespace GazeusGamesEtapaTeste
 {
     class Program
     {
-        static Screen screen;
         static void Main(string[] args)
         {
-            screen = new Screen();
-            Game game = new Game(screen);
-
+            SceneManager sceneManager = new SceneManager(new Game());
         }
-
-        
     }
 }
