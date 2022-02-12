@@ -21,7 +21,7 @@ namespace GazeusGamesEtapaTeste
 
         internal Point GetTransformedPoint(Point position, int rot)
         {
-            Point screePos = GazeusMath.MathG.GetScreenPositon(point, rot);
+            Point screePos = MathG.GetScreenPositon(point, rot);
             int vertexX = position.X + screePos.X;
             int vertexY = position.Y - screePos.Y;
             return new Point(vertexX, vertexY);

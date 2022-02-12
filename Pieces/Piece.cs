@@ -7,6 +7,9 @@ namespace GazeusGamesEtapaTeste.Pieces
 {
     public abstract class Piece
     {
+        readonly static int maxColor = System.Enum.GetValues(typeof(ConsoleColor)).Length;
+        static int lastColor = 0;
+
         List<Vertex> vertices;
 
         Point position;
@@ -35,12 +38,9 @@ namespace GazeusGamesEtapaTeste.Pieces
             rot -= mov.Rotation;
         }
 
-        internal void RandomColorDraw(Screen screen)
+        internal void SequenceColorDraw(Screen screen)
         {
-            Array values = Enum.GetValues(typeof(ConsoleColor));
-            Random random = new Random();
-            ConsoleColor randomColor = (ConsoleColor)values.GetValue(random.Next(values.Length));
-            Draw(screen, (ConsoleColor)randomColor);
+            Draw(screen, (ConsoleColor)(lastColor++ % maxColor));
         }
 
         internal void Draw(Screen screen, ConsoleColor color)
@@ -48,7 +48,7 @@ namespace GazeusGamesEtapaTeste.Pieces
             foreach (Vertex vertex in vertices)
             {
                 Point p = vertex.GetTransformedPoint(position, rot);
-                int index = MathG.GetIndex(p.X, p.Y);
+                int index = MathG.GetIndex(p.Y, p.X);
                 screen.DrawAt(index, vertex.VertexChar, color);
             }
         }
@@ -73,12 +73,12 @@ namespace GazeusGamesEtapaTeste.Pieces
             return false;
         }
 
-        internal bool IsAtLimit()
+        internal bool IsAtLimit(int limit)
         {
             foreach (Vertex v in vertices)
             {
                 Point p = v.GetTransformedPoint(position, rot);
-                if (p.Y >= Screen.col - 1)
+                if (p.Y >= limit)
                 {
                     return true;
                 }
@@ -92,25 +92,26 @@ namespace GazeusGamesEtapaTeste.Pieces
             vertices.RemoveAt(i);
         }
 
-        internal void GetVerticesAtLimit(ref int count)
+        internal void GetVerticesAtLimit(ref int count, int limit)
         {
             foreach (Vertex v in vertices)
             {
                 Point p = v.GetTransformedPoint(position, rot);
-                if (p.Y >= Screen.col - 1)
+                if (p.Y == limit)
                 {
+                    Console.WriteLine(p.Y);
                     count++;
                 }
             }
         }
 
-        internal void RemoveVerticesAtLimit()
+        internal void RemoveVerticesAtLimit(int limit)
         {
             for (int i = vertices.Count - 1; i >= 0; i--)
             {
                 Point p = vertices[i].GetTransformedPoint(position, rot);
 
-                if (p.Y >= Screen.col - 1)
+                if (p.Y >= limit)
                 {
                     vertices.RemoveAt(i);
                 }

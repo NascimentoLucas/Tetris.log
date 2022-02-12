@@ -8,9 +8,10 @@ namespace GazeusGamesEtapaTeste
 {
     public class Screen
     {
-        public const string tapString = "                              ";
-        public const int col = 15;
-        public const int row = 15;
+        public const string tapStringStandard = "                    ";
+        public static readonly string tapString = $"{tapStringStandard}{tapStringStandard}{tapStringStandard}";
+        public const int col = 10;
+        public const int row = 20;
         const char emptySpace = '-';
 
         const ConsoleColor standardColor = ConsoleColor.White;
@@ -19,12 +20,11 @@ namespace GazeusGamesEtapaTeste
 
         public Screen()
         {
-            for (int i = 0; i < col; i++)
+            for (int i = 0; i < row; i++)
             {
-                for (int j = 0; j < row; j++)
+                for (int j = 0; j < col; j++)
                 {
-                    int index = i * col;
-                    index += j;
+                    int index = GazeusMath.MathG.GetIndex(i, j);
                     grid[index] = new Pixel(standardColor, emptySpace);
                 }
             }
@@ -34,14 +34,13 @@ namespace GazeusGamesEtapaTeste
         {
             //Console.Clear();
             Console.ForegroundColor = standardColor;
-            for (int i = 0; i < col; i++)
+            for (int i = 0; i < row; i++)
             {
                 Console.Write(tapString);
-                Console.Write($"{i.ToString("00")};");                        
-                for (int j = 0; j < row; j++)
+                Console.Write($"{i.ToString("00")};");
+                for (int j = 0; j < col; j++)
                 {
-                    int index = i * col;
-                    index += j;
+                    int index = GazeusMath.MathG.GetIndex(i, j);
                     Console.ForegroundColor = grid[index].color;
                     Console.Write(grid[index].gridChar);
                     grid[index].gridChar = emptySpace;

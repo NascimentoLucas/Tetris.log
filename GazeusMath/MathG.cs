@@ -32,9 +32,9 @@ namespace GazeusGamesEtapaTeste.GazeusMath
             return axis;
         }
 
-        internal static int GetIndex(int vX, int vY)
+        internal static int GetIndex(int i, int j)
         {
-            return vX + (vY * Screen.col);
+            return j + (i * Screen.col);
         }
     }
 }
