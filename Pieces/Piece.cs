@@ -38,6 +38,18 @@ namespace GazeusGamesEtapaTeste.Pieces
             rot -= mov.Rotation;
         }
 
+        internal List<DeadVertex> GetTransformed()
+        {
+            List<DeadVertex> verts = new List<DeadVertex>();
+            foreach (Vertex myVertex in vertices)
+            {
+                DeadVertex dV = myVertex.GetDeadVertex(position, rot);
+                verts.Add(dV);
+            }
+
+            return verts;
+        }
+
         internal void SequenceColorDraw(Screen screen)
         {
             Draw(screen, (ConsoleColor)(lastColor++ % maxColor));

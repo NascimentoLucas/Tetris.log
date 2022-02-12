@@ -4,38 +4,44 @@ using System.Drawing;
 using System.Threading;
 using GazeusGamesEtapaTeste.Input;
 using GazeusGamesEtapaTeste.Pieces;
+using GazeusGamesEtapaTeste.Table;
 
 namespace GazeusGamesEtapaTeste
 {
     public class Game
     {
-
         const string KeyForward = "f";
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
         private const ConsoleColor FreePiecesColor = ConsoleColor.Green;
+
         Screen screen;
-        List<Piece> pieces;
         Piece currentPiece;
-        int score = 0;
+        LineManager lineManager;
+        Dictionary<string, Input.Input> inputs;
+
+        int score;
+        bool running;
+
         public Game(Screen screen)
         {
             this.screen = screen;
 
-            pieces = new List<Piece>();
             currentPiece = PieceFactory.GetNewPiece();
+            lineManager = new LineManager();
 
-            Dictionary<string, Input.Input> inputs = InputManager.GetInputs();
+            inputs = InputManager.GetInputs();
+            score = 0;
+            running = true;
+            GameLoop();
+        }
 
-            bool running = true;
+        private void GameLoop()
+        {
             string input;
-
             while (running)
             {
                 Screen.WriteLine($"Score: {score}.");
-                foreach (Piece p in pieces)
-                {
-                    p.Draw(screen, BlockedPiecesColor);
-                }
+                lineManager.DrawLines(screen, BlockedPiecesColor);
                 currentPiece.Draw(screen, FreePiecesColor);
                 screen.Draw();
 
@@ -92,58 +98,18 @@ namespace GazeusGamesEtapaTeste
 
         private void NextPiece()
         {
-            pieces.Add(currentPiece);
+            lineManager.GetVertexFromPiece(currentPiece);
             CheckForPoint();
             currentPiece = PieceFactory.GetNewPiece();
         }
 
         private void CheckForPoint()
         {
-            int count = 0;
-            int start = Screen.row - 1;
-            int amountScoreDone = 0;
-            for (int i = start; i >= 1; i--)
-            {
-                foreach (Piece piece in pieces)
-                {
-                    piece.GetVerticesAtLimit(ref count, i);
-                }
-
-                //if (count != 0)
-                //    Screen.WriteLine($"Count {count} at {i}");
-                if (count >= Screen.col)
-                {
-                    foreach (Piece piece in pieces)
-                    {
-                        piece.RemoveVerticesAtLimit(i);
-                    }
-                    score++;
-                    amountScoreDone++;
-                }
-                count = 0;
-            }
-
-
-            for (int i = 0; i < amountScoreDone; i++)
-            {
-                foreach (Piece piece in pieces)
-                {
-                    piece.Move(InputManager.down);
-                }
-            }
-
+            //throw new NotImplementedException();
         }
 
         private bool Colision(Piece currentPiece)
         {
-            foreach (Piece piece in pieces)
-            {
-                if (piece.Colision(currentPiece))
-                {
-                    return true;
-                }
-            }
-
             return false;
         }
     }
