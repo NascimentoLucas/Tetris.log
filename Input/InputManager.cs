@@ -6,6 +6,8 @@ namespace GazeusGamesEtapaTeste.Input
 {
     public static class InputManager
     {
+        public const ConsoleKey KeyForward = ConsoleKey.Spacebar;
+        public const ConsoleKey StartButton = ConsoleKey.Enter;
         public static readonly Input right = new Input(new Point(1, 0), 0, "Mover para Direita");
         public static readonly Input left = new Input(new Point(-1, 0), 0, "Mover para Esquerda");
         public static readonly Input down = new Input(new Point(0, 1), 0, "Mover para Baixo");

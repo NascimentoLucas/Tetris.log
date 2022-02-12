@@ -4,6 +4,13 @@ using GazeusGamesEtapaTeste.GameCore;
 
 namespace GazeusGamesEtapaTeste.Table
 {
+    public class VertexAlreadyAdded : ArgumentException
+    {
+        public VertexAlreadyAdded(int index) : base($"index ({index}) alreday have { nameof(Vertex) }") { }
+        public VertexAlreadyAdded(string message) : base(message) { }
+        public VertexAlreadyAdded(string message, Exception e) : base(message, e) { }
+    }
+
     public class LineTable
     {
         LineManager manager;
@@ -40,8 +47,7 @@ namespace GazeusGamesEtapaTeste.Table
                 throw new ArgumentException($"index out of range");
 
             if (vertices[x] != null)
-                //throw new ArgumentException($"index ({x}) alreday have {nameof(Vertex)} ");
-                return;
+                throw new VertexAlreadyAdded(x);
 
             vertices[x] = vertex;
         }

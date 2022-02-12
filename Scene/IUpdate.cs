@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace GazeusGamesEtapaTeste.Scene
 {
-    public interface IScene
+    public interface IUpdate
     {
-        void Draw();
-        void Input(ConsoleKey key);
+        void Update();
     }
 }

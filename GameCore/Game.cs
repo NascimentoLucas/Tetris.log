@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Threading;
 using GazeusGamesEtapaTeste.Input;
 using GazeusGamesEtapaTeste.Pieces;
 using GazeusGamesEtapaTeste.Table;
@@ -8,7 +8,7 @@ using GazeusGamesEtapaTeste.Scene;
 
 namespace GazeusGamesEtapaTeste.GameCore
 {
-    public class Game : IScene
+    public class Game : IScene, IUpdate
     {
         const ConsoleKey KeyForward = ConsoleKey.Spacebar;
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
@@ -21,8 +21,6 @@ namespace GazeusGamesEtapaTeste.GameCore
         DateTime lastTime;
 
         int score;
-        bool updateScreen;
-
 
         public Game()
         {
@@ -34,28 +32,12 @@ namespace GazeusGamesEtapaTeste.GameCore
 
             inputs = InputManager.GetInputs();
             score = 0;
-
-            GameLoop();
-        }
-
-        private void GameLoop()
-        {
-            if (updateScreen)
-            {
-                updateScreen = false;
-            }
-            else
-            {
-                return;
-            }
-            Draw();
         }
 
         public void AutoPieceMovement()
         {
             currentPiece.Move(InputManager.down);
             CheckCurrentPiece();
-            updateScreen = true;
         }
 
         public void Update()
@@ -87,7 +69,6 @@ namespace GazeusGamesEtapaTeste.GameCore
                     CheckCurrentPiece();
                 }
             }
-            updateScreen = true;
         }
 
         public void Draw()
@@ -144,15 +125,29 @@ namespace GazeusGamesEtapaTeste.GameCore
 
         private void NextPiece()
         {
-            lineManager.GetVertexFromPiece(currentPiece);
+            try
+            {
+                lineManager.GetVertexFromPiece(currentPiece);
+            }
+            catch (VertexAlreadyAdded)
+            {
+                EndGame();
+            }
+
             CheckForPoint();
             currentPiece = PieceFactory.GetNewPiece();
 
-            bool running = !lineManager.Colision(currentPiece);
-            if (!running)
+            bool keepGame = !lineManager.Colision(currentPiece);
+            if (!keepGame)
             {
-                SceneManager.Singleton.ChangeScene(new Menu());
+                EndGame();
             }
+        }
+
+        private static void EndGame()
+        {
+            SceneManager.Singleton.ChangeScene(new Menu());
+            SceneManager.Singleton.SetUpdate(null);
         }
 
         private void CheckForPoint()

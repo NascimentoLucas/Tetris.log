@@ -8,7 +8,7 @@ namespace GazeusGamesEtapaTeste
     {
         static void Main(string[] args)
         {
-            SceneManager sceneManager = new SceneManager(new Game());
+            SceneManager sceneManager = new SceneManager(new Menu());
         }
     }
 }

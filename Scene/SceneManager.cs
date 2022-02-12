@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GazeusGamesEtapaTeste.GameCore;
+using System;
 using System.Threading;
 
 namespace GazeusGamesEtapaTeste.Scene
@@ -12,12 +13,16 @@ namespace GazeusGamesEtapaTeste.Scene
         public static SceneManager Singleton;
 
         IScene currentScene;
+        IUpdate currentUpdate;
 
         bool running;
         bool canDraw;
 
         public SceneManager(IScene currentScene)
         {
+            if (currentScene == null)
+                throw new ArgumentNullException();
+
             Singleton = this;
 
             canDraw = true;
@@ -47,7 +52,7 @@ namespace GazeusGamesEtapaTeste.Scene
         {
             while (running)
             {
-                currentScene.Update();
+                currentUpdate?.Update();
                 if (canDraw)
                 {
                     currentScene.Draw();
@@ -58,7 +63,16 @@ namespace GazeusGamesEtapaTeste.Scene
 
         public void ChangeScene(IScene nextScene)
         {
+            if (nextScene == null)
+                throw new ArgumentNullException();
+
             currentScene = nextScene;
+            canDraw = true;
+        }
+
+        internal void SetUpdate(IUpdate update)
+        {
+            currentUpdate = update;
         }
     }
 }
