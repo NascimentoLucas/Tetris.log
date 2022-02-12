@@ -42,7 +42,7 @@ namespace GazeusGamesEtapaTeste
 
         internal void Draw()
         {
-            //Console.Clear();
+            Console.Clear();
             Console.ForegroundColor = standardColor;
             for (int i = 0; i < row; i++)
             {

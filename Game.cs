@@ -53,25 +53,28 @@ namespace GazeusGamesEtapaTeste
                 }
                 Screen.WriteLine($"{Screen.tapString}{KeyForward}: descer até o final.");
 
-
-                input = Console.ReadLine();
-                if (inputs.ContainsKey(input))
-                    currentPiece.Move(inputs[input]);
-
-                if (input.Equals(KeyForward))
-                    Foward();
-                else
+                if (!lineManager.MoveLinesDown())
                 {
-                    if (!IsTheMovementValid())
-                    {
-                        currentPiece.RevertMovement(inputs[input]);
-                    }
+
+                    input = Console.ReadLine();
+                    if (inputs.ContainsKey(input))
+                        currentPiece.Move(inputs[input]);
+
+                    if (input.Equals(KeyForward))
+                        Foward();
                     else
                     {
-                        CheckCurrentPiece();  
+                        if (!IsTheMovementValid())
+                        {
+                            currentPiece.RevertMovement(inputs[input]);
+                        }
+                        else
+                        {
+                            CheckCurrentPiece();
+                        }
                     }
-                }
 
+                }
 
                 Thread.Sleep(500);
             }
@@ -79,12 +82,12 @@ namespace GazeusGamesEtapaTeste
 
         private bool IsTheMovementValid()
         {
-            return !Colision(currentPiece);
+            return !currentPiece.IsAtWidthLimit(Screen.col) && !Colision(currentPiece);
         }
 
         private void Foward()
         {
-            while (!currentPiece.IsAtLimit(Screen.row - 1) && !Colision(currentPiece))
+            while (!currentPiece.IsAtHightLimit(Screen.row - 1) && !Colision(currentPiece))
                 currentPiece.Move(InputManager.down);
 
             if (Colision(currentPiece))
@@ -95,7 +98,7 @@ namespace GazeusGamesEtapaTeste
 
         private void CheckCurrentPiece()
         {
-            if (currentPiece.IsAtLimit(Screen.row - 1))
+            if (currentPiece.IsAtHightLimit(Screen.row - 1))
             {
                 NextPiece();
                 return;
@@ -122,9 +125,6 @@ namespace GazeusGamesEtapaTeste
         {
             int roundScore = lineManager.GetScore();
             score += roundScore;
-
-            if(roundScore > 0)
-                lineManager.MoveLinesDown();
         }
 
         private bool Colision(Piece currentPiece)

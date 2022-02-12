@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using GazeusGamesEtapaTeste.Pieces;
 
 namespace GazeusGamesEtapaTeste.Table
@@ -65,19 +66,16 @@ namespace GazeusGamesEtapaTeste.Table
             return score;
         }
 
-        internal void MoveLinesDown()
+        internal bool MoveLinesDown()
         {
-            bool repeat;
+            bool hasLineDown = false;
             bool result;
-            do
+            for (int i = lines.Length - 2; i >= 0; i--)
             {
-                repeat = false;
-                for (int i = lines.Length - 2; i >= 0; i--)
-                {
-                    result = lines[i].CheckUnderLine();
-                    repeat = repeat || result;
-                }
-            } while (repeat);
+                result = lines[i].CheckUnderLine();
+                hasLineDown = hasLineDown || result;
+            }
+            return hasLineDown;
         }
 
         internal bool IsAValidIndex(int underLineIndex)

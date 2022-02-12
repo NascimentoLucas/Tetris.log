@@ -68,12 +68,26 @@ namespace GazeusGamesEtapaTeste.Pieces
             }
         }
 
-        internal bool IsAtLimit(int limit)
+        internal bool IsAtHightLimit(int limit)
         {
             foreach (Vertex v in vertices)
             {
                 Point p = v.GetTransformedPoint(position, angle);
                 if (p.Y >= limit)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal bool IsAtWidthLimit(int limit)
+        {
+            foreach (Vertex v in vertices)
+            {
+                Point p = v.GetTransformedPoint(position, angle);
+                if (p.X >= limit || p.X < 0)
                 {
                     return true;
                 }
