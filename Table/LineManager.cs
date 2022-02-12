@@ -45,5 +45,20 @@ namespace GazeusGamesEtapaTeste.Table
                 lines[vertex.Point.Y].AddVertexAt(vertex.Point.X, vertex);
             }
         }
+
+        internal bool Colision(Piece currentPiece)
+        {
+
+            foreach (Vertex vertex in currentPiece.Vertices)
+            {
+                Point p = vertex.GetTransformedPoint(currentPiece.Position,
+                    currentPiece.Angle);
+
+                if (lines[p.Y].IsFillAt(p.X))
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

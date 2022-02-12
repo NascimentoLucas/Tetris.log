@@ -57,14 +57,29 @@ namespace GazeusGamesEtapaTeste
                 input = Console.ReadLine();
                 if (inputs.ContainsKey(input))
                     currentPiece.Move(inputs[input]);
-                CheckCurrentPiece();
 
                 if (input.Equals(KeyForward))
                     Foward();
+                else
+                {
+                    if (!IsTheMovementValid())
+                    {
+                        currentPiece.RevertMovement(inputs[input]);
+                    }
+                    else
+                    {
+                        CheckCurrentPiece();  
+                    }
+                }
 
 
                 Thread.Sleep(500);
             }
+        }
+
+        private bool IsTheMovementValid()
+        {
+            return !Colision(currentPiece);
         }
 
         private void Foward()
@@ -110,7 +125,7 @@ namespace GazeusGamesEtapaTeste
 
         private bool Colision(Piece currentPiece)
         {
-            return false;
+            return lineManager.Colision(currentPiece);
         }
     }
 }

@@ -42,5 +42,13 @@ namespace GazeusGamesEtapaTeste.Table
                 screen.DrawAt(index, vertex.VertexChar, color);
             }
         }
+
+        internal bool IsFillAt(int x)
+        {
+            if (x < 0 || x > vertices.Length - 1)
+                throw new ArgumentException($"index out of range");
+
+            return vertices[x] != null;
+        }
     }
 }
