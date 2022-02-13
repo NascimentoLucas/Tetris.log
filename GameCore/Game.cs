@@ -12,10 +12,10 @@ namespace GazeusGamesEtapaTeste.GameCore
     {
         const ConsoleKey KeyForward = ConsoleKey.Spacebar;
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
-        private const ConsoleColor FreePiecesColor = ConsoleColor.Green;
 
         Screen screen;
         Piece currentPiece;
+        FeedbackNextPiece feedbackNextPiece;
         LineManager lineManager;
         Dictionary<ConsoleKey, Input.Input> inputs;
         DateTime lastTime;
@@ -26,8 +26,9 @@ namespace GazeusGamesEtapaTeste.GameCore
         {
             lastTime = DateTime.Now;
             screen = new Screen();
-
             currentPiece = PieceFactory.GetNewPiece();
+            feedbackNextPiece = new FeedbackNextPiece();
+            feedbackNextPiece.SetupFeedbackNextPiece();
             lineManager = new LineManager();
 
             inputs = InputManager.GetInputs();
@@ -74,17 +75,11 @@ namespace GazeusGamesEtapaTeste.GameCore
         public void Draw()
         {
             lineManager.DrawLines(screen, BlockedPiecesColor);
-            currentPiece.Draw(screen, FreePiecesColor);
+            currentPiece.Draw(screen);
             screen.Draw();
 
             Screen.WriteLine($"{SceneManager.tapString}Score: {score}.");
-            Screen.WriteLine($"{SceneManager.tapString}Para jogar aperte: ");
-
-            foreach (KeyValuePair<ConsoleKey, Input.Input> entry in inputs)
-            {
-                Screen.WriteLine($"{SceneManager.tapString}{entry.Key}: {entry.Value.Description}.");
-            }
-            Screen.WriteLine($"{SceneManager.tapString}{KeyForward}: descer até o final.");
+            feedbackNextPiece.Draw();
         }
 
         private bool IsTheMovementValid()
@@ -141,6 +136,10 @@ namespace GazeusGamesEtapaTeste.GameCore
             if (!keepGame)
             {
                 EndGame();
+            }
+            else
+            {
+                feedbackNextPiece.SetupFeedbackNextPiece();
             }
         }
 

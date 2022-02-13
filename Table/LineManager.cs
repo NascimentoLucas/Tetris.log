@@ -30,7 +30,7 @@ namespace GazeusGamesEtapaTeste.Table
 
         internal void GetVertexFromPiece(Piece currentPiece)
         {
-            List<DeadVertex> vertices = currentPiece.GetTransformed();
+            List<DeadVertex> vertices = currentPiece.GetTransformedVertices();
 
             foreach (DeadVertex vertex in vertices)
             {

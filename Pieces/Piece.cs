@@ -8,11 +8,7 @@ namespace GazeusGamesEtapaTeste.Pieces
 {
     public abstract class Piece
     {
-        readonly static int maxColor = Enum.GetValues(typeof(ConsoleColor)).Length;
-        static int lastColor = 0;
-
         List<Vertex> vertices;
-
         Point position;
         int angle = 0;
 
@@ -42,7 +38,7 @@ namespace GazeusGamesEtapaTeste.Pieces
             angle -= mov.Rotation;
         }
 
-        internal List<DeadVertex> GetTransformed()
+        internal List<DeadVertex> GetTransformedVertices()
         {
             List<DeadVertex> verts = new List<DeadVertex>();
             foreach (Vertex myVertex in vertices)
@@ -54,12 +50,7 @@ namespace GazeusGamesEtapaTeste.Pieces
             return verts;
         }
 
-        internal void SequenceColorDraw(Screen screen)
-        {
-            Draw(screen, (ConsoleColor)(lastColor++ % maxColor));
-        }
-
-        internal void Draw(Screen screen, ConsoleColor color)
+        internal void Draw(Screen screen)
         {
             foreach (Vertex vertex in vertices)
             {
@@ -97,6 +88,21 @@ namespace GazeusGamesEtapaTeste.Pieces
             return false;
         }
 
+        internal void DrawInMiniScreen(MiniScreen miniScreen)
+        {
+            foreach (Vertex vertex in vertices)
+            {
+                Point p = vertex.GetTransformedPoint(position, angle);
+                int index = MiniScreen.GetIndex(p.Y, p.X);
+                miniScreen.DrawAt(index, vertex.VertexChar, vertex.Color);
+            }
+        }
 
+        internal void MoveTo(int x, int y)
+        {
+            position.X = x;
+            position.Y = y;
+            angle = 0;
+        }
     }
 }

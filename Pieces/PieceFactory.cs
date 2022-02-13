@@ -6,13 +6,12 @@ namespace GazeusGamesEtapaTeste.Pieces
 {
     public static class PieceFactory
     {
+        const int middle = Screen.col / 2;
+        private const int MaxPieces = 5;
+        static int count = 0;
 
-        static int count = -1;
-
-        public static Piece GetNewPiece()
+        static Piece GetPiece(int count)
         {
-            count++;
-            int middle = Screen.col / 2;
             switch (count)
             {
                 case 0:
@@ -28,8 +27,21 @@ namespace GazeusGamesEtapaTeste.Pieces
                 case 5:
                     return new StandingSnakePiece(middle, 2);
             }
-            count = -1;
+
             return new TPiece(middle, 2);
+        }
+
+        public static Piece GetNewPiece()
+        {
+            count++;
+            if (count > MaxPieces)
+                count = -1;
+            return GetPiece(count);
+        }
+
+        public static Piece GetNextNewPiece()
+        {
+            return GetPiece(count + 1);
         }
 
     }

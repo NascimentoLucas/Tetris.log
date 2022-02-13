@@ -4,26 +4,31 @@ using GazeusGamesEtapaTeste.Pieces;
 
 namespace GazeusGamesEtapaTeste.GameCore
 {
-    public class Screen
+    public class MiniScreen
     {
-        public const int col = 10;
-        public const int row = 20;
-        const char emptySpace = '-';
+        public const int col = 5;
+        public const int row = 5;
+        const char emptySpace = ' ';
 
         const ConsoleColor standardColor = ConsoleColor.White;
 
         Pixel[] grid = new Pixel[row * col];
 
-        public Screen()
+        public MiniScreen()
         {
             for (int i = 0; i < row; i++)
             {
                 for (int j = 0; j < col; j++)
                 {
-                    int index = GazeusMath.MathG.GetIndex(i, j);
+                    int index = GetIndex(i, j);
                     grid[index] = new Pixel(standardColor, emptySpace);
                 }
             }
+        }
+
+        internal static int GetIndex(int i, int j)
+        {
+            return j + (i * col);
         }
 
         public static void WriteLine(object obj)
@@ -38,15 +43,15 @@ namespace GazeusGamesEtapaTeste.GameCore
 
         internal void Draw()
         {
-            Console.Clear();
             Console.ForegroundColor = standardColor;
             for (int i = 0; i < row; i++)
             {
                 Write(SceneManager.tapString);
+                Write(SceneManager.tapStringStandard);
                 Write($"");
                 for (int j = 0; j < col; j++)
                 {
-                    int index = GazeusMath.MathG.GetIndex(i, j);
+                    int index = GetIndex(i, j);
                     Console.ForegroundColor = grid[index].color;
                     Write(grid[index].gridChar);
                     grid[index].gridChar = emptySpace;
