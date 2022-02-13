@@ -143,9 +143,9 @@ namespace GazeusGamesEtapaTeste.GameCore
             }
         }
 
-        private static void EndGame()
+        private void EndGame()
         {
-            SceneManager.Singleton.ChangeScene(new Menu());
+            SceneManager.Singleton.ChangeScene(new EndGame(score));
             SceneManager.Singleton.SetUpdate(null);
         }
 
