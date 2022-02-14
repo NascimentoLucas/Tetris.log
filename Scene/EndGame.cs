@@ -69,6 +69,14 @@ namespace GazeusGamesEtapaTeste.Scene
                 {
                     ranking.TryAddToRanking(new RankingItem(0));
                 }
+                bool wasAdd =
+                            ranking.TryAddToRanking(new RankingItem(score));
+
+                if (wasAdd)
+                {
+                    rankingTitle = $"Parabéns de novo, você entrou para o ranking";
+                    SaveRanking();
+                }
                 SaveRanking();
             }
         }
