@@ -54,7 +54,7 @@ namespace GazeusGamesEtapaTeste.Scene
         {
             if (menuInputs.ContainsKey(key))
             {
-                joke = $"Computador: {menuInputs[key]}";
+                joke = $"Computador Fala: {menuInputs[key]}";
                 return;
             }
 
