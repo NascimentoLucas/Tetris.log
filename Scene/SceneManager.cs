@@ -6,7 +6,6 @@ namespace GazeusGamesEtapaTeste.Scene
 {
     public class SceneManager
     {
-        const int frameTime = 500;
         public const string tapStringStandard = "                    ";
         public static readonly string tapString = $"{tapStringStandard}{tapStringStandard}{tapStringStandard}";
 

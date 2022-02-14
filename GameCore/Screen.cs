@@ -43,7 +43,6 @@ namespace GazeusGamesEtapaTeste.GameCore
             for (int i = 0; i < row; i++)
             {
                 Write(SceneManager.tapString);
-                Write($"");
                 for (int j = 0; j < col; j++)
                 {
                     int index = GazeusMath.MathG.GetIndex(i, j);

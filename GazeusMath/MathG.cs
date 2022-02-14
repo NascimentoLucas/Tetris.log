@@ -10,7 +10,7 @@ namespace GazeusGamesEtapaTeste.GazeusMath
     {
         public static Point GetScreenPositon(Point axis, int angle)
         {
-            Matrix4x4 me = new Matrix4x4(
+            Matrix4x4 matrix = new Matrix4x4(
                 1, 0, 0, axis.X,
                 0, 1, 0, axis.Y,
                 0, 0, 1, 1,
@@ -20,13 +20,13 @@ namespace GazeusGamesEtapaTeste.GazeusMath
             float cos = (float)Math.Cos(rad);
             float sin = (float)Math.Sin(rad);
 
-            Matrix4x4 rot = new Matrix4x4(
+            Matrix4x4 matrixRotation = new Matrix4x4(
                 cos, -sin, 0, 0,
                 sin, cos, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-            Matrix4x4 result = Matrix4x4.Multiply(rot, me);
+            Matrix4x4 result = Matrix4x4.Multiply(matrixRotation, matrix);
             axis.X = (int)result.M14;
             axis.Y = (int)result.M24;
 

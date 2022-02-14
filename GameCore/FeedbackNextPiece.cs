@@ -6,6 +6,7 @@ namespace GazeusGamesEtapaTeste.GameCore
 {
     public class FeedbackNextPiece
     {
+        private const int TimeToRotate = 500;
         MiniScreen miniScreen;
         Piece nextPiece;
         DateTime lastTime;
@@ -25,7 +26,7 @@ namespace GazeusGamesEtapaTeste.GameCore
 
         public void Draw()
         {
-            if ((DateTime.Now - lastTime).TotalMilliseconds >= 500)
+            if ((DateTime.Now - lastTime).TotalMilliseconds >= TimeToRotate)
             {
                 nextPiece.Move(Input.InputManager.rotLeft);
                 lastTime = DateTime.Now;

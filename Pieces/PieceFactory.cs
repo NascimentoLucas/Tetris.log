@@ -31,6 +31,11 @@ namespace GazeusGamesEtapaTeste.Pieces
             return new TPiece(middle, 2);
         }
 
+        internal static void Reset()
+        {
+            count = -1;
+        }
+
         public static Piece GetNewPiece()
         {
             count++;

@@ -9,26 +9,26 @@ namespace GazeusGamesEtapaTeste.Table
 {
     public class LineManager
     {
-        LineTable[] lines;
+        List<LineTable> lines;
 
         public LineManager()
         {
-            lines = new LineTable[Screen.row];
-            for (int i = 0; i < lines.Length; i++)
+            lines = new List<LineTable>();
+            for (int i = 0; i < Screen.row; i++)
             {
-                lines[i] = new LineTable(this, i);
+                lines.Add(new LineTable(this, i));
             }
         }
 
         internal void DrawLines(Screen screen, ConsoleColor color)
         {
-            foreach (LineTable line in lines)
+            for (int i = 0; i < lines.Count; i++)
             {
-                line.Draw(screen, color);
+                lines[i].Draw(i, screen, color);
             }
         }
 
-        internal void GetVertexFromPiece(Piece currentPiece)
+        internal void SetVerticesFromPiece(Piece currentPiece)
         {
             List<DeadVertex> vertices = currentPiece.GetTransformedVertices();
 
@@ -55,7 +55,7 @@ namespace GazeusGamesEtapaTeste.Table
         internal int GetScore()
         {
             int score = 0;
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < lines.Count; i++)
             {
                 if (lines[i].IsAllFill())
                 {
@@ -69,19 +69,17 @@ namespace GazeusGamesEtapaTeste.Table
 
         internal bool MoveLinesDown()
         {
-            bool hasLineDown = false;
-            bool result;
-            for (int i = lines.Length - 2; i >= 0; i--)
+            for (int i = lines.Count - 1; i >= 0; i--)
             {
-                result = lines[i].CheckUnderLine();
-                hasLineDown = hasLineDown || result;
+                if (lines[i].WasEmptied)
+                {
+                    lines.RemoveAt(i);
+                    lines.Insert(0, new LineTable(this, 0));
+                    return true;
+                }
             }
-            return hasLineDown;
-        }
 
-        internal bool IsAValidIndex(int underLineIndex)
-        {
-            return underLineIndex < lines.Length;
+            return false;
         }
 
         internal void SwapLines(int above, int under)

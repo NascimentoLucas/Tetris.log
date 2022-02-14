@@ -10,8 +10,8 @@ namespace GazeusGamesEtapaTeste.GameCore
 {
     public class Game : IScene, IUpdate
     {
-        const ConsoleKey KeyForward = ConsoleKey.Spacebar;
         private const ConsoleColor BlockedPiecesColor = ConsoleColor.Blue;
+        private const int TimeToAutoMove = 1;
 
         Screen screen;
         Piece currentPiece;
@@ -26,6 +26,7 @@ namespace GazeusGamesEtapaTeste.GameCore
         {
             lastTime = DateTime.Now;
             screen = new Screen();
+            PieceFactory.Reset();
             currentPiece = PieceFactory.GetNewPiece();
             feedbackNextPiece = new FeedbackNextPiece();
             feedbackNextPiece.SetupFeedbackNextPiece();
@@ -43,8 +44,7 @@ namespace GazeusGamesEtapaTeste.GameCore
 
         public void Update()
         {
-            lineManager.MoveLinesDown();
-            if ((DateTime.Now - lastTime).TotalSeconds >= 1)
+            if ((DateTime.Now - lastTime).TotalSeconds >= TimeToAutoMove)
             {
                 AutoPieceMovement();
                 lastTime = DateTime.Now;
@@ -57,7 +57,7 @@ namespace GazeusGamesEtapaTeste.GameCore
             if (inputs.ContainsKey(key))
                 currentPiece.Move(inputs[key]);
 
-            if (key.Equals(KeyForward))
+            if (key.Equals(InputManager.KeyForward))
                 Foward();
             else
             {
@@ -92,7 +92,9 @@ namespace GazeusGamesEtapaTeste.GameCore
         {
             while (!currentPiece.IsAtHightLimit(Screen.row - 1)
                 && !lineManager.Colision(currentPiece))
+            {
                 currentPiece.Move(InputManager.down);
+            }
 
             if (lineManager.Colision(currentPiece))
                 currentPiece.RevertMovement(InputManager.down);
@@ -122,9 +124,9 @@ namespace GazeusGamesEtapaTeste.GameCore
         {
             try
             {
-                lineManager.GetVertexFromPiece(currentPiece);
+                lineManager.SetVerticesFromPiece(currentPiece);
             }
-            catch (VertexAlreadyAdded)
+            catch (VertexAlreadyAddedException)
             {
                 EndGame();
             }
@@ -151,8 +153,16 @@ namespace GazeusGamesEtapaTeste.GameCore
 
         private void CheckForPoint()
         {
-            int roundScore = lineManager.GetScore();
-            score += roundScore;
+            int scoreInRound = lineManager.GetScore();
+            score += scoreInRound;
+
+            if(scoreInRound > 0)
+            {
+                while (lineManager.MoveLinesDown())
+                {
+
+                }
+            }
         }
     }
 }

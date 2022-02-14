@@ -21,9 +21,9 @@ namespace GazeusGamesEtapaTeste.Scene
             menuInputs = new Dictionary<ConsoleKey, string>()
             {
                 [ConsoleKey.D] = "hummm.",
-                [ConsoleKey.A] = "Parece uma boa estratégia.",                
+                [ConsoleKey.A] = "Parece uma boa estratégia.",
                 [ConsoleKey.Q] = "Seno de que ?",
-                [ConsoleKey.E] = "A pessoa ta como ? só no preparo",
+                [ConsoleKey.E] = "A pessoa ta como ? só no preparo.",
                 [ConsoleKey.S] = "Isso não é automático ?",
                 [InputManager.KeyForward] = "Por sua conta e risco.",
             };
@@ -47,14 +47,14 @@ namespace GazeusGamesEtapaTeste.Scene
             Console.WriteLine($"{SceneManager.tapString}Pronto(a) ? aperte {InputManager.StartButton} para começar.");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine(joke);
+            Console.WriteLine($"{joke}");
         }
 
         public void Input(ConsoleKey key)
         {
             if (menuInputs.ContainsKey(key))
             {
-                joke = menuInputs[key];
+                joke = $"Computador: {menuInputs[key]}";
                 return;
             }
 
@@ -66,7 +66,7 @@ namespace GazeusGamesEtapaTeste.Scene
             }
 
             joke = "";
-            
+
         }
     }
 }

@@ -4,28 +4,18 @@ using GazeusGamesEtapaTeste.GameCore;
 
 namespace GazeusGamesEtapaTeste.Table
 {
-    public class VertexAlreadyAdded : ArgumentException
-    {
-        public VertexAlreadyAdded(int index) : base($"index ({index}) alreday have { nameof(Vertex) }") { }
-        public VertexAlreadyAdded(string message) : base(message) { }
-        public VertexAlreadyAdded(string message, Exception e) : base(message, e) { }
-    }
-
     public class LineTable
     {
         LineManager manager;
         DeadVertex[] vertices;
-        int myIndex;
 
         bool wasEmptied;
 
-        public bool WasEmptied { get => wasEmptied; }
-        public int UnderLineIndex { get => myIndex + 1; }
+        public bool WasEmptied { get => wasEmptied; set => wasEmptied = value; }
 
-        public LineTable(LineManager manager, int underLineIndex)
+        public LineTable(LineManager manager, int myIndex)
         {
             this.manager = manager;
-            this.myIndex = underLineIndex;
             wasEmptied = false;
             vertices = new DeadVertex[Screen.col];
         }
@@ -47,17 +37,17 @@ namespace GazeusGamesEtapaTeste.Table
                 throw new ArgumentException($"index out of range");
 
             if (vertices[x] != null)
-                throw new VertexAlreadyAdded(x);
+                throw new VertexAlreadyAddedException(x);
 
             vertices[x] = vertex;
         }
 
-        internal void Draw(Screen screen, ConsoleColor color)
+        internal void Draw(int lineIndex, Screen screen, ConsoleColor color)
         {
             foreach (DeadVertex vertex in vertices)
             {
                 if (vertex == null) continue;
-                int index = MathG.GetIndex(myIndex, vertex.Point.X);
+                int index = MathG.GetIndex(lineIndex, vertex.Point.X);
                 screen.DrawAt(index, vertex.VertexChar, vertex.Color);
             }
         }
@@ -77,21 +67,6 @@ namespace GazeusGamesEtapaTeste.Table
             {
                 vertices[i] = null;
             }
-        }
-
-        internal bool CheckUnderLine()
-        {
-            if (!manager.IsAValidIndex(UnderLineIndex)) return false;
-
-            LineTable underLine = manager.GetLine(UnderLineIndex);
-            if (underLine.wasEmptied)
-            {
-                manager.SwapLines(myIndex, UnderLineIndex);
-                myIndex++;
-                return true;
-            }
-
-            return false;
         }
     }
 }
